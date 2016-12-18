@@ -2,11 +2,11 @@
 
 namespace Streak
 {
-	public static class Streak
-	{
-		static Streak()
-		{
-		}
+    public static class Streak
+    {
+        static Streak()
+        {
+        }
 
-	}
+    }
 }
