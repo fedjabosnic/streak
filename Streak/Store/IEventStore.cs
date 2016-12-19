@@ -4,10 +4,16 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Threading;
 
 namespace Streak.Store
 {
+    public interface IStore
+    {
+        IStreak<FileStreak.Event> this[string name] { get; }
+    }
+
     public interface IStreak<T>
     {
         /// <summary>
@@ -28,6 +34,25 @@ namespace Streak.Store
         IEnumerable<T> Get(long from = 0, long to = long.MaxValue, bool continuous = false);
     }
 
+    public static class Streak
+    {
+        public static IStreak<FileStreak.Event> Memory(string name)
+        {
+            var index = new MemoryStream();
+            var events = new MemoryStream();
+
+            return new FileStreak(index, events);
+        }
+
+        public static IStreak<FileStreak.Event> File(string name)
+        {
+            var index = System.IO.File.Open($@"c:\temp\streaks\{name}\index.ski", FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
+            var events = System.IO.File.Open($@"c:\temp\streaks\{name}\events.ske", FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
+
+            return new FileStreak(index, events);
+        }
+    }
+
     public class FileStreak : IStreak<FileStreak.Event>
     {
         private readonly Stream _index;
@@ -43,13 +68,7 @@ namespace Streak.Store
 
         public void Save(IEnumerable<Event> events)
         {
-            // Positions index:
-            // position | from | to
-            // 1        | 0    | 128
-            // 2        | 129  | 523
-            // 3        | 524  | 785
-
-            // TODO: Validate events being saved and exit early
+            // TODO: Add error handling
 
             var position = Length;
 
@@ -64,90 +83,68 @@ namespace Streak.Store
                 e.Position = ++position;
                 e.Timestamp = DateTime.UtcNow;
 
-                var raw = e.Serialize();
+                // Write event
+                ends += e.SerializeTo(_events);
 
-                ends += raw.Length;
-
-                // Write index
+                // Write index (improve this)
                 _index.Write(BitConverter.GetBytes(starts), 0, 8);
                 _index.Write(BitConverter.GetBytes(ends), 0, 8);
 
-                // Write event
-                _events.Write(raw, 0, raw.Length);
-
-                _index.Flush();
                 _events.Flush();
+                _index.Flush();
 
                 starts = ends;
             }
         }
 
-        public IEnumerable<Event> Get(long @from = 0, long to = long.MaxValue, bool continuous = false)
+        public IEnumerable<Event> Get(long @from = 1, long to = long.MaxValue, bool continuous = false)
         {
+            // If data is not yet available, either wait or exit
+            if (from > Length)
+            {
+                if (continuous)
+                    while (from > Length) Thread.Sleep(10);
+                else
+                    yield break;
+            }
+
+            var exists = to > Length ? Length : to;
+
             var temp = new byte[8];
+            _index.Position = from * 16 - 16;
+            _index.Read(temp, 0, 8);
+            _events.Position = BitConverter.ToInt64(temp, 0);
 
-            var max = to > Length ? Length : to;
-
-            var starts = 0L;
-            var ends = 0L;
-
-            if (max > from)
+            // Get any currently available data
+            for (var i = from; i <= exists; i++)
             {
-                var lengths = new int[max - from];
+                var e = new Event();
 
-                _index.Position = from*16;
-                _index.Read(temp, 0, 8);
-                _events.Position = BitConverter.ToInt64(temp, 0);
-                _index.Position = from*16;
+                e.DeserializeFrom(_events);
 
-                for (var i = from; i < max; i++)
+                yield return e;
+            }
+
+            // Wait for any upcoming data
+            if (continuous && to > exists)
+            {
+                for (var i = exists + 1; i <= to; i++)
                 {
-                    _index.Read(temp, 0, 8);
-                    starts = BitConverter.ToInt64(temp, 0);
-                    _index.Read(temp, 0, 8);
-                    ends = BitConverter.ToInt64(temp, 0);
-
-                    lengths[i - from] = (int) (ends - starts);
-                }
-
-                foreach (var length in lengths)
-                {
-                    var raw = new byte[length];
-
-                    _events.Read(raw, 0, length);
+                    while (i > Length) Thread.Sleep(10);
 
                     var e = new Event();
-                    e.Deserialize(raw);
+
+                    e.DeserializeFrom(_events);
 
                     yield return e;
                 }
             }
+        }
 
-            if (continuous)
-            {
-                for (var i = from; i < to; i++)
-                {
-                    while (i >= Length) Thread.Sleep(10);
-
-                    _index.Position = i * 16;
-
-                    _index.Read(temp, 0, 8);
-                    starts = BitConverter.ToInt64(temp, 0);
-
-                    _index.Read(temp, 0, 8);
-                    ends = BitConverter.ToInt64(temp, 0);
-
-                    var raw = new byte[ends - starts];
-
-                    _events.Position = starts;
-                    _events.Read(raw, 0, raw.Length);
-
-                    var e = new Event();
-                    e.Deserialize(raw);
-
-                    yield return e;
-                }
-            }
+        public class Entry
+        {
+            public long From { get; set; }
+            public long To { get; set; }
         }
 
         public class Event
@@ -164,28 +161,28 @@ namespace Streak.Store
             /// <summary> The event meta data. </summary>
             public string Meta { get; set; }
 
-            public byte[] Serialize()
+            public long SerializeTo(Stream stream)
             {
                 if (Position == null) throw new Exception();
                 if (Timestamp == null) throw new Exception();
 
-                using (var stream = new MemoryStream())
-                using (var sw = new BinaryWriter(stream))
+                var start = stream.Position;
+
+                using (var sw = new BinaryWriter(stream, new UTF8Encoding(), true))
                 {
                     sw.Write(Position.Value);
                     sw.Write(Timestamp.Value.Ticks);
                     sw.Write(Type);
                     sw.Write(Data);
                     sw.Write(Meta);
-
-                    return stream.GetBuffer();
                 }
+
+                return stream.Position - start;
             }
 
-            public void Deserialize(byte[] source)
+            public void DeserializeFrom(Stream stream)
             {
-                using (var stream = new MemoryStream(source))
-                using (var sw = new BinaryReader(stream))
+                using (var sw = new BinaryReader(stream, new UTF8Encoding(), true))
                 {
                     Position = sw.ReadInt64();
                     Timestamp = new DateTime(sw.ReadInt64(), DateTimeKind.Utc);
