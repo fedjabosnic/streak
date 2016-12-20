@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26014.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Streak", "Streak\Streak.csproj", "{0539F21E-9D6D-4515-9AD0-F9BEDF592A84}"
 EndProject
@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".common", ".common", "{85F0
 		README.md = README.md
 		.common\VersionInfo.cs = .common\VersionInfo.cs
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Streak.Demo", "Streak.Demo\Streak.Demo.csproj", "{8654DA8E-332F-4853-ADCF-2308482030F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,6 +30,10 @@ Global
 		{C68DED27-A119-45F7-8B61-366AA504C15D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C68DED27-A119-45F7-8B61-366AA504C15D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C68DED27-A119-45F7-8B61-366AA504C15D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8654DA8E-332F-4853-ADCF-2308482030F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8654DA8E-332F-4853-ADCF-2308482030F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8654DA8E-332F-4853-ADCF-2308482030F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8654DA8E-332F-4853-ADCF-2308482030F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
