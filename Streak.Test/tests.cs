@@ -19,7 +19,8 @@ namespace Streak.Test
             true.Should().Be(true);
         }
 
-        // NOTES: Below are some preliminary tests that hit the hard disk (ignored by default)
+        // NOTE: Below are some preliminary integration tests that hit the hard disk (ignored by default so shouldn't auto-run)
+        //       They are left here for convenience and will be removed later...
 
         [Ignore]
         [TestMethod]
@@ -28,9 +29,9 @@ namespace Streak.Test
             var index = File.Open(@"c:\temp\streaks\abc\index.ski", FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read);
             var events = File.Open(@"c:\temp\streaks\abc\events.ske", FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read);
 
-            var streak = new FileStreak(index, events);
+            var streak = new Streak.Store.Streak(index, events);
 
-            var es = new List<FileStreak.Event>(1);
+            var es = new List<Event>(1);
 
             var timer = new Stopwatch();
 
@@ -38,7 +39,7 @@ namespace Streak.Test
 
             for (int i = 0; i < 1000000; i++)
             {
-                es.Add(new FileStreak.Event { Type = "Test.Event", Data = $" Tick: {i}", Meta = $" CorrelationId: {i}" });
+                es.Add(new Event { Type = "Test.Event", Data = $" Tick: {i}", Meta = $" CorrelationId: {i}" });
                 streak.Save(es);
                 es.Clear();
             }
@@ -55,9 +56,9 @@ namespace Streak.Test
             var index = File.Open(@"c:\temp\streaks\abc\index.ski", FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read);
             var events = File.Open(@"c:\temp\streaks\abc\events.ske", FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read);
 
-            var streak = new FileStreak(index, events);
+            var streak = new Streak.Store.Streak(index, events);
 
-            var es = new List<FileStreak.Event>(1000);
+            var es = new List<Event>(1000);
 
             var timer = new Stopwatch();
 
@@ -67,7 +68,7 @@ namespace Streak.Test
             {
                 for (int i = 0; i < 1000; i++)
                 {
-                    es.Add(new FileStreak.Event
+                    es.Add(new Event
                     {
                         Type = "Test.Event",
                         Data = $" Tick: {i}",
@@ -91,13 +92,13 @@ namespace Streak.Test
             var index = File.Open(@"c:\temp\streaks\abc\index.ski", FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read);
             var events = File.Open(@"c:\temp\streaks\abc\events.ske", FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read);
 
-            var streak = new FileStreak(index, events);
+            var streak = new Streak.Store.Streak(index, events);
 
-            var es = new List<FileStreak.Event>();
+            var es = new List<Event>();
 
             for (int i = 0; i < 1000000; i++)
             {
-                es.Add(new FileStreak.Event { Type = "Test.Event", Data = $" Tick: {i}", Meta = $" CorrelationId: {i}" });
+                es.Add(new Event { Type = "Test.Event", Data = $" Tick: {i}", Meta = $" CorrelationId: {i}" });
             }
 
             var timer = new Stopwatch();
@@ -118,11 +119,11 @@ namespace Streak.Test
             var index = File.Open(@"c:\temp\streaks\abc\index.ski", FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read);
             var events = File.Open(@"c:\temp\streaks\abc\events.ske", FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read);
 
-            var streak = new FileStreak(index, events);
+            var streak = new Streak.Store.Streak(index, events);
 
             var timer = new Stopwatch();
 
-            var es = new List<FileStreak.Event>();
+            var es = new List<Event>();
 
             timer.Start();
 
@@ -145,15 +146,15 @@ namespace Streak.Test
                 var w_index = File.Open(@"c:\temp\streaks\abc\index.ski", FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read);
                 var w_events = File.Open(@"c:\temp\streaks\abc\events.ske", FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read);
 
-                var w_streak = new FileStreak(w_index, w_events);
+                var w_streak = new Streak.Store.Streak(w_index, w_events);
 
                 for (int i = 0; i < 1000000000; i++)
                 {
                     Thread.Sleep(10);
 
-                    w_streak.Save(new List<FileStreak.Event>
+                    w_streak.Save(new List<Event>
                     {
-                        new FileStreak.Event
+                        new Event
                         {
                             Type = "Test.Event",
                             Data = $" Tick: {i}",
@@ -168,7 +169,7 @@ namespace Streak.Test
             var r_index = File.Open(@"c:\temp\streaks\abc\index.ski", FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             var r_events = File.Open(@"c:\temp\streaks\abc\events.ske", FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 
-            var r_streak = new FileStreak(r_index, r_events);
+            var r_streak = new Streak.Store.Streak(r_index, r_events);
 
             foreach (var e in r_streak.Get(from: 100, to: 200, continuous: true))
             {

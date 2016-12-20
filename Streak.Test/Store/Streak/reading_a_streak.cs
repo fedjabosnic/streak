@@ -10,7 +10,7 @@ namespace Streak.Test.Store.Streak
     [TestClass]
     public class reading_a_streak
     {
-        private List<FileStreak.Event> output;
+        private List<Event> output;
 
         [TestInitialize]
         public void Setup()
@@ -18,18 +18,18 @@ namespace Streak.Test.Store.Streak
             var index = new MemoryStream();
             var events = new MemoryStream();
 
-            var writer = new FileStreak(index, events);
+            var writer = new global::Streak.Store.Streak(index, events);
 
-            var input = new List<FileStreak.Event>
+            var input = new List<Event>
             {
-                new FileStreak.Event { Type = "Test.Event.A", Data = "Tick: 1", Meta = "CorrelationId: 1" },
-                new FileStreak.Event { Type = "Test.Event.B", Data = "Tick: 2", Meta = "CorrelationId: 2" },
-                new FileStreak.Event { Type = "Test.Event.C", Data = "Tick: 3", Meta = "CorrelationId: 3" }
+                new Event { Type = "Test.Event.A", Data = "Tick: 1", Meta = "CorrelationId: 1" },
+                new Event { Type = "Test.Event.B", Data = "Tick: 2", Meta = "CorrelationId: 2" },
+                new Event { Type = "Test.Event.C", Data = "Tick: 3", Meta = "CorrelationId: 3" }
             };
 
             writer.Save(input);
 
-            var reader = new FileStreak(index, events);
+            var reader = new global::Streak.Store.Streak(index, events);
 
             output = reader.Get().ToList();
         }

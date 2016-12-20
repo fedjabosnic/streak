@@ -38,9 +38,10 @@
     <Compile Include="..\.common\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
-    <Compile Include="Store\IEventStore.cs" />
-    <Compile Include="Streak.cs" />
+    <Compile Include="Store\Event.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Store\IStreak.cs" />
+    <Compile Include="Store\Streak.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Streak.nuspec" />
