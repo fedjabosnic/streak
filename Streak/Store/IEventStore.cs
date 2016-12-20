@@ -83,7 +83,7 @@ namespace Streak.Store
                 e.Position = ++position;
                 e.Timestamp = DateTime.UtcNow;
 
-                // Write event
+                // Write data
                 ends += e.SerializeTo(_events);
 
                 // Write index (improve this)
@@ -145,6 +145,28 @@ namespace Streak.Store
         {
             public long From { get; set; }
             public long To { get; set; }
+
+            public long SerializeTo(Stream stream)
+            {
+                var start = stream.Position;
+
+                using (var sw = new BinaryWriter(stream, new UTF8Encoding(), true))
+                {
+                    sw.Write(From);
+                    sw.Write(To);
+                }
+
+                return stream.Position - start;
+            }
+
+            public void DeserializeFrom(Stream stream)
+            {
+                using (var sw = new BinaryReader(stream, new UTF8Encoding(), true))
+                {
+                    From = sw.ReadInt64();
+                    To = sw.ReadInt64();
+                }
+            }
         }
 
         public class Event
