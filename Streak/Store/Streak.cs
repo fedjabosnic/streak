@@ -7,88 +7,99 @@ namespace Streak.Store
 {
     public class Streak : IStreak<Event>
     {
-        private readonly Stream _index;
-        private readonly Stream _events;
+        private readonly string _index;
+        private readonly string _data;
 
-        public long Length => _index.Length >= 16 ? _index.Length / 16 : 0;
+        public long Length => new FileInfo(_index).Length / 16;
 
-        public Streak(Stream index, Stream events)
+        public Streak(string path)
         {
-            _index = index;
-            _events = events;
+            _index = $@"{path}\index.ski";
+            _data = $@"{path}\data.ske";
+
+            if (!File.Exists(_index)) File.Create(_index).Dispose();
+            if (!File.Exists(_data)) File.Create(_data).Dispose();
         }
 
         public void Save(IEnumerable<Event> events)
         {
             // TODO: Add error handling
 
-            var position = Length;
-
-            var starts = _events.Length;
-            var ends = _events.Length;
-
-            _index.Position = _index.Length;
-            _events.Position = _events.Length;
-
-            foreach (var e in events)
+            using (var index = File.Open(_index, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read))
+            using (var data = File.Open(_data, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read))
             {
-                e.Position = ++position;
-                e.Timestamp = DateTime.UtcNow;
+                var position = index.Length / 16;
 
-                // Write data
-                ends += e.SerializeTo(_events);
+                var starts = data.Length;
+                var ends = data.Length;
 
-                // Write index (improve this)
-                _index.Write(BitConverter.GetBytes(starts), 0, 8);
-                _index.Write(BitConverter.GetBytes(ends), 0, 8);
+                index.Position = index.Length;
+                data.Position = data.Length;
 
-                _events.Flush();
-                _index.Flush();
+                foreach (var e in events)
+                {
+                    e.Position = ++position;
+                    e.Timestamp = DateTime.UtcNow;
 
-                starts = ends;
+                    // Write data
+                    ends += e.SerializeTo(data);
+
+                    // Write index (improve this)
+                    index.Write(BitConverter.GetBytes(starts), 0, 8);
+                    index.Write(BitConverter.GetBytes(ends), 0, 8);
+
+                    data.Flush(true);
+                    index.Flush(true);
+
+                    starts = ends;
+                }
             }
         }
 
         public IEnumerable<Event> Get(long @from = 1, long to = long.MaxValue, bool continuous = false)
         {
-            // If data is not yet available, either wait or exit
-            if (from > Length)
+            using (var index = File.Open(_index, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using (var data = File.Open(_data, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
-                if (continuous)
-                    while (from > Length) Thread.Sleep(10);
-                else
-                    yield break;
-            }
-
-            var exists = to > Length ? Length : to;
-
-            var temp = new byte[8];
-            _index.Position = from * 16 - 16;
-            _index.Read(temp, 0, 8);
-            _events.Position = BitConverter.ToInt64(temp, 0);
-
-            // Get any currently available data
-            for (var i = from; i <= exists; i++)
-            {
-                var e = new Event();
-
-                e.DeserializeFrom(_events);
-
-                yield return e;
-            }
-
-            // Wait for any upcoming data
-            if (continuous && to > exists)
-            {
-                for (var i = exists + 1; i <= to; i++)
+                // If data is not yet available, either wait or exit
+                if (from > index.Length / 16)
                 {
-                    while (i > Length) Thread.Sleep(10);
+                    if (continuous)
+                        while (from > index.Length / 16) Thread.Sleep(10);
+                    else
+                        yield break;
+                }
 
+                var exists = to > index.Length / 16 ? index.Length / 16 : to;
+
+                var temp = new byte[8];
+                index.Position = from * 16 - 16;
+                index.Read(temp, 0, 8);
+                data.Position = BitConverter.ToInt64(temp, 0);
+
+                // Get any currently available data
+                for (var i = from; i <= exists; i++)
+                {
                     var e = new Event();
 
-                    e.DeserializeFrom(_events);
+                    e.DeserializeFrom(data);
 
                     yield return e;
+                }
+
+                // Wait for any upcoming data
+                if (continuous && to > exists)
+                {
+                    for (var i = exists + 1; i <= to; i++)
+                    {
+                        while (i > index.Length / 16) Thread.Sleep(10);
+
+                        var e = new Event();
+
+                        e.DeserializeFrom(data);
+
+                        yield return e;
+                    }
                 }
             }
         }
