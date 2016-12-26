@@ -26,7 +26,7 @@ namespace Streak.Test
         [TestMethod]
         public void write()
         {
-            var streak = new Streak.Store.Streak(@"c:\temp\streaks\abc");
+            var streak = new Streak.Store.Streak($@"{Environment.CurrentDirectory}\abc", writer: true);
 
             var es = new List<Event>(1);
 
@@ -34,7 +34,7 @@ namespace Streak.Test
 
             timer.Start();
 
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < 1000000; i++)
             {
                 es.Add(new Event { Type = "Test.Event", Data = $" Tick: {i}", Meta = $" CorrelationId: {i}" });
                 streak.Save(es);
@@ -50,7 +50,7 @@ namespace Streak.Test
         [TestMethod]
         public void write_batch()
         {
-            var streak = new Streak.Store.Streak(@"c:\temp\streaks\abc");
+            var streak = new Streak.Store.Streak($@"{Environment.CurrentDirectory}\abc", writer: true);
 
             var es = new List<Event>(1000);
 
@@ -83,7 +83,7 @@ namespace Streak.Test
         [TestMethod]
         public void write_bulk()
         {
-            var streak = new Streak.Store.Streak(@"c:\temp\streaks\abc");
+            var streak = new Streak.Store.Streak($@"{Environment.CurrentDirectory}\abc", writer: true);
 
             var es = new List<Event>();
 
@@ -107,7 +107,7 @@ namespace Streak.Test
         [TestMethod]
         public void read()
         {
-            var streak = new Streak.Store.Streak(@"c:\temp\streaks\abc");
+            var streak = new Streak.Store.Streak($@"{Environment.CurrentDirectory}\abc", writer: true);
 
             var timer = new Stopwatch();
 
@@ -129,15 +129,15 @@ namespace Streak.Test
         [TestMethod]
         public void read_write()
         {
+            var streak = new Streak.Store.Streak($@"{Environment.CurrentDirectory}\abc", writer: true);
+
             Task.Factory.StartNew(() =>
             {
-                var w_streak = new Streak.Store.Streak(@"c:\temp\streaks\abc");
-
                 for (int i = 0; i < 1000000000; i++)
                 {
                     Thread.Sleep(10);
 
-                    w_streak.Save(new List<Event>
+                    streak.Save(new List<Event>
                     {
                         new Event
                         {
@@ -151,9 +151,7 @@ namespace Streak.Test
 
             Thread.Sleep(3000);
 
-            var r_streak = new Streak.Store.Streak(@"c:\temp\streaks\abc");
-
-            foreach (var e in r_streak.Get(from: 100, to: 200, continuous: true))
+            foreach (var e in streak.Get(from: 100, to: 200, continuous: true))
             {
                 if (e.Position % 100000 == 0) Debug.WriteLine($"{DateTime.UtcNow.TimeOfDay} Got {e.Position}");
             }

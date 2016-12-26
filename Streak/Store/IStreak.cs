@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Streak.Store
 {
-    public interface IStreak<T>
+    public interface IStreak<T> : IDisposable
     {
         /// <summary> Returns the number of events in the streak. </summary>
         long Length { get; }
