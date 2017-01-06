@@ -6,30 +6,21 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Streak.Store;
+using Streak.Core;
 
 namespace Streak.Test
 {
     [TestClass]
-    public class tests
+    public class performance_tests
     {
-        [TestMethod]
-        public void should_work()
-        {
-            true.Should().Be(true);
-        }
-
-        // NOTE: Below are some preliminary integration tests that hit the hard disk (ignored by default so shouldn't auto-run)
-        //       They are left here for convenience and will be removed later...
+        // NOTE: Below are some preliminary performance tests that hit the hard disk (ignored by default so shouldn't auto-run)
+        // NOTE: They are left here for convenience and will be removed later...
 
         [Ignore]
         [TestMethod]
         public void write()
         {
-            var index = File.Open(@"c:\temp\streaks\abc\index.ski", FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read);
-            var events = File.Open(@"c:\temp\streaks\abc\events.ske", FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read);
-
-            var streak = new Streak.Store.Streak(index, events);
+            var streak = new global::Streak.Core.Streak($@"{Environment.CurrentDirectory}\abc", writer: true);
 
             var es = new List<Event>(1);
 
@@ -53,10 +44,7 @@ namespace Streak.Test
         [TestMethod]
         public void write_batch()
         {
-            var index = File.Open(@"c:\temp\streaks\abc\index.ski", FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read);
-            var events = File.Open(@"c:\temp\streaks\abc\events.ske", FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read);
-
-            var streak = new Streak.Store.Streak(index, events);
+            var streak = new global::Streak.Core.Streak($@"{Environment.CurrentDirectory}\abc", writer: true);
 
             var es = new List<Event>(1000);
 
@@ -89,10 +77,7 @@ namespace Streak.Test
         [TestMethod]
         public void write_bulk()
         {
-            var index = File.Open(@"c:\temp\streaks\abc\index.ski", FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read);
-            var events = File.Open(@"c:\temp\streaks\abc\events.ske", FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read);
-
-            var streak = new Streak.Store.Streak(index, events);
+            var streak = new global::Streak.Core.Streak($@"{Environment.CurrentDirectory}\abc", writer: true);
 
             var es = new List<Event>();
 
@@ -116,10 +101,7 @@ namespace Streak.Test
         [TestMethod]
         public void read()
         {
-            var index = File.Open(@"c:\temp\streaks\abc\index.ski", FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read);
-            var events = File.Open(@"c:\temp\streaks\abc\events.ske", FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read);
-
-            var streak = new Streak.Store.Streak(index, events);
+            var streak = new global::Streak.Core.Streak($@"{Environment.CurrentDirectory}\abc", writer: true);
 
             var timer = new Stopwatch();
 
@@ -141,18 +123,15 @@ namespace Streak.Test
         [TestMethod]
         public void read_write()
         {
+            var streak = new global::Streak.Core.Streak($@"{Environment.CurrentDirectory}\abc", writer: true);
+
             Task.Factory.StartNew(() =>
             {
-                var w_index = File.Open(@"c:\temp\streaks\abc\index.ski", FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read);
-                var w_events = File.Open(@"c:\temp\streaks\abc\events.ske", FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.Read);
-
-                var w_streak = new Streak.Store.Streak(w_index, w_events);
-
                 for (int i = 0; i < 1000000000; i++)
                 {
                     Thread.Sleep(10);
 
-                    w_streak.Save(new List<Event>
+                    streak.Save(new List<Event>
                     {
                         new Event
                         {
@@ -166,12 +145,7 @@ namespace Streak.Test
 
             Thread.Sleep(3000);
 
-            var r_index = File.Open(@"c:\temp\streaks\abc\index.ski", FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-            var r_events = File.Open(@"c:\temp\streaks\abc\events.ske", FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-
-            var r_streak = new Streak.Store.Streak(r_index, r_events);
-
-            foreach (var e in r_streak.Get(from: 100, to: 200, continuous: true))
+            foreach (var e in streak.Get(from: 100, to: 200, continuous: true))
             {
                 if (e.Position % 100000 == 0) Debug.WriteLine($"{DateTime.UtcNow.TimeOfDay} Got {e.Position}");
             }

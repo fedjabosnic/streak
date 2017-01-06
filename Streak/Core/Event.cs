@@ -1,18 +1,15 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
-using System.IO.Compression;
-using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace Streak.Store
+namespace Streak.Core
 {
     public class Event
     {
         /// <summary> The position. </summary>
-        public long? Position { get; set; }
+        public long Position { get; set; }
         /// <summary> The timestamp. </summary>
-        public DateTime? Timestamp { get; set; }
+        public DateTime Timestamp { get; set; }
 
         /// <summary> The event type. </summary>
         public string Type { get; set; }
@@ -23,15 +20,12 @@ namespace Streak.Store
 
         public long SerializeTo(Stream stream)
         {
-            if (Position == null) throw new Exception();
-            if (Timestamp == null) throw new Exception();
-
             var start = stream.Position;
 
             using (var sw = new BinaryWriter(stream, new UTF8Encoding(), true))
             {
-                sw.Write(Position.Value);
-                sw.Write(Timestamp.Value.Ticks);
+                sw.Write(Position);
+                sw.Write(Timestamp.Ticks);
                 sw.Write(Type);
                 sw.Write(Data);
                 sw.Write(Meta);
