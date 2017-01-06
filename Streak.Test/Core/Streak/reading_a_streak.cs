@@ -1,24 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Streak.Store;
+using Streak.Core;
 
-namespace Streak.Test.Store.Streak
+namespace Streak.Test.Core.Streak
 {
     [TestClass]
     public class reading_a_streak
     {
+        private IStreak<Event> reader;
+        private IStreak<Event> writer;
+
         private List<Event> output;
 
         [TestInitialize]
         public void Setup()
         {
-            var index = new MemoryStream();
-            var events = new MemoryStream();
-
-            var writer = new global::Streak.Store.Streak(index, events);
+            writer = new global::Streak.Core.Streak(Environment.CurrentDirectory, writer: true);
 
             var input = new List<Event>
             {
@@ -29,9 +30,19 @@ namespace Streak.Test.Store.Streak
 
             writer.Save(input);
 
-            var reader = new global::Streak.Store.Streak(index, events);
+            reader = new global::Streak.Core.Streak(Environment.CurrentDirectory);
 
             output = reader.Get().ToList();
+        }
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            reader.Dispose();
+            writer.Dispose();
+
+            File.Delete(Environment.CurrentDirectory + @"\main.ind");
+            File.Delete(Environment.CurrentDirectory + @"\main.dat");
         }
 
         [TestMethod]
