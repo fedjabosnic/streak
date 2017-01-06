@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Streak.Core;
+using Streak.Dsl;
 
 namespace Streak.Demo
 {
@@ -17,7 +18,7 @@ namespace Streak.Demo
             Console.WriteLine("This is a demo program to show the performance and usage of streaks.");
             Console.WriteLine("");
             Console.WriteLine("This demo will:");
-            Console.WriteLine("- Write directly to one stream");
+            Console.WriteLine("- Write 1,000,000 events directly to one stream");
             Console.WriteLine("- Replicate asynchronously to another stream");
             Console.WriteLine("");
 
@@ -27,6 +28,9 @@ namespace Streak.Demo
             Console.ReadKey();
 
             var original = new Core.Streak($@"{Environment.CurrentDirectory}\aaa", writer: true);
+            var replica = new Core.Streak($@"{Environment.CurrentDirectory}\bbb", writer: true);
+
+            original.ReplicateTo(replica);
 
             Task.Factory.StartNew(() =>
             {
@@ -50,34 +54,15 @@ namespace Streak.Demo
 
             }, TaskCreationOptions.LongRunning);
 
-            Thread.Sleep(1000);
-
-            var replica = new Core.Streak($@"{Environment.CurrentDirectory}\bbb", writer: true);
-
-            Task.Factory.StartNew(() =>
+            while (replica.Length < 10000000)
             {
-                var batch = 1000;
-                
-                var es2 = new List<Event>(batch);
-
-                // Tail original streak and replicate its data
-                foreach (var e in original.Get(from: replica.Length + 1, to: 100000000, continuous: true))
-                {
-                    es2.Add(e);
-
-                    if (e.Position % batch == 0)
-                    {
-                        replica.Save(es2);
-                        es2.Clear();
-                    }
-                }
-            }, TaskCreationOptions.LongRunning);
-
-            while (true)
-            {
+                Console.WriteLine($"{DateTime.UtcNow.TimeOfDay:g}: {original.Length} <-> {replica.Length}");
                 Thread.Sleep(1000);
-                Console.WriteLine($"{DateTime.UtcNow.TimeOfDay:g}: {original.Length}/{replica.Length}");
             }
+
+            Console.WriteLine("");
+            Console.WriteLine("Finished");
+            Console.WriteLine("");
 
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey();
