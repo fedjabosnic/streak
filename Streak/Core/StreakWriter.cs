@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Streak.Store
+namespace Streak.Core
 {
     public class StreakWriter : IDisposable
     {
@@ -15,8 +15,8 @@ namespace Streak.Store
             if (!Directory.Exists(path)) Directory.CreateDirectory(path);
 
             // Open or create the relevant files
-            _index = File.Open($@"{path}\main.ind", FileMode.Append, FileAccess.Write, FileShare.Read);
-            _items = File.Open($@"{path}\main.dat", FileMode.Append, FileAccess.Write, FileShare.Read);
+            _index = new FileStream($@"{path}\main.ind", FileMode.Append, FileAccess.Write, FileShare.Read, 4096, FileOptions.None);
+            _items = new FileStream($@"{path}\main.dat", FileMode.Append, FileAccess.Write, FileShare.Read, 4096, FileOptions.None);
         }
 
         public void Dispose()
@@ -27,10 +27,9 @@ namespace Streak.Store
 
         public void Write(IEnumerable<Event> events)
         {
-            // TODO: Optimize for small batches (it is more efficient to write directly to disk)
-            // TODO: Thread safety (shouldn't call write more than once at a time)
+            // TODO: Optimize for small batches as it might be more efficient to write directly to disk
 
-            // Write all data in the batch to temporary streams
+            // Write all data in the batch to in memory streams
             using (var index = new MemoryStream())
             using (var items = new MemoryStream())
             {
@@ -39,10 +38,11 @@ namespace Streak.Store
 
                 foreach (var e in events)
                 {
+                    // Shoul this be in user space?
                     e.Position = e.Position != 0 ? e.Position : ++position;
                     e.Timestamp = e.Timestamp != DateTime.MinValue ? e.Timestamp : DateTime.UtcNow;
 
-                    // Write data
+                    // Write data (consider a serializer abstraction)
                     var length = e.SerializeTo(items);
 
                     // Write index (improve this)
@@ -52,12 +52,13 @@ namespace Streak.Store
                     offset += length;
                 }
 
+                // Rewind in memory streams
                 items.Position = 0;
                 index.Position = 0;
 
-                // Update real files
-                items.CopyTo(_items);
-                index.CopyTo(_index);
+                // Copy to files
+                items.CopyTo(_items, 4096);
+                index.CopyTo(_index, 4096);
 
                 // Flush files
                 _items.Flush();

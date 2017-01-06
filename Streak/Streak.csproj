@@ -38,12 +38,12 @@
     <Compile Include="..\.common\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
-    <Compile Include="Store\Event.cs" />
+    <Compile Include="Core\Event.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Store\IStreak.cs" />
-    <Compile Include="Store\Streak.cs" />
-    <Compile Include="Store\StreakReader.cs" />
-    <Compile Include="Store\StreakWriter.cs" />
+    <Compile Include="Core\IStreak.cs" />
+    <Compile Include="Core\Streak.cs" />
+    <Compile Include="Core\StreakReader.cs" />
+    <Compile Include="Core\StreakWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Streak.nuspec" />

@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
-using System.IO.Compression;
-using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace Streak.Store
+namespace Streak.Core
 {
     public class Event
     {

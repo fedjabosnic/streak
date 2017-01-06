@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Streak.Store;
+using Streak.Core;
 
 namespace Streak.Demo
 {
@@ -12,18 +12,21 @@ namespace Streak.Demo
     {
         static void Main(string[] args)
         {
-            //var abc = new Store.Streak(@"c:\temp\streaks\abc", false);
-            //var def = new Store.Streak(@"c:\temp\streaks\def", false);
-
-            //var abcs = abc.Get(1, 10, false).ToList();
-            //var defs = def.Get(1, 10, false).ToList();
-
-
+            Console.WriteLine("Streak demo");
+            Console.WriteLine("-----------");
+            Console.WriteLine("This is a demo program to show the performance and usage of streaks.");
+            Console.WriteLine("");
+            Console.WriteLine("This demo will:");
+            Console.WriteLine("- Write directly to one stream");
+            Console.WriteLine("- Replicate asynchronously to another stream");
+            Console.WriteLine("");
 
             Console.WriteLine("Press any key to start...");
+            Console.WriteLine("");
+
             Console.ReadKey();
 
-            var streak = new Store.Streak(@"c:\temp\streaks\abc", writer: true);
+            var original = new Core.Streak($@"{Environment.CurrentDirectory}\aaa", writer: true);
 
             Task.Factory.StartNew(() =>
             {
@@ -41,7 +44,7 @@ namespace Streak.Demo
                         });
                     }
 
-                    streak.Save(es);
+                    original.Save(es);
                     es.Clear();
                 }
 
@@ -49,7 +52,7 @@ namespace Streak.Demo
 
             Thread.Sleep(1000);
 
-            var streak2 = new Store.Streak(@"c:\temp\streaks\def", writer: true);
+            var replica = new Core.Streak($@"{Environment.CurrentDirectory}\bbb", writer: true);
 
             Task.Factory.StartNew(() =>
             {
@@ -57,13 +60,14 @@ namespace Streak.Demo
                 
                 var es2 = new List<Event>(batch);
 
-                foreach (var e in streak.Get(from: streak2.Length + 1, to: 100000000, continuous: true))
+                // Tail original streak and replicate its data
+                foreach (var e in original.Get(from: replica.Length + 1, to: 100000000, continuous: true))
                 {
                     es2.Add(e);
 
                     if (e.Position % batch == 0)
                     {
-                        streak2.Save(es2);
+                        replica.Save(es2);
                         es2.Clear();
                     }
                 }
@@ -72,7 +76,7 @@ namespace Streak.Demo
             while (true)
             {
                 Thread.Sleep(1000);
-                Console.WriteLine($"{DateTime.UtcNow.TimeOfDay:g}: {streak.Length}/{streak2.Length}");
+                Console.WriteLine($"{DateTime.UtcNow.TimeOfDay:g}: {original.Length}/{replica.Length}");
             }
 
             Console.WriteLine("Press any key to exit...");

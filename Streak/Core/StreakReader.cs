@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 
-namespace Streak.Store
+namespace Streak.Core
 {
     public class StreakReader : IDisposable
     {
@@ -12,9 +12,6 @@ namespace Streak.Store
         public StreakReader(string path)
         {
             _path = path;
-
-            // Ensure directory exists
-            if (!Directory.Exists(path)) throw new Exception();
         }
 
         public void Dispose()
@@ -23,8 +20,8 @@ namespace Streak.Store
 
         public IEnumerable<Event> Read(long @from = 1, long to = long.MaxValue, bool continuous = false)
         {
-            using (var index = File.Open($@"{_path}\main.ind", FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-            using (var datas = File.Open($@"{_path}\main.dat", FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using (var index = new FileStream($@"{_path}\main.ind", FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using (var datas = new FileStream($@"{_path}\main.dat", FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
                 // If data is not yet available, either wait or exit
                 if (from > index.Length / 16)

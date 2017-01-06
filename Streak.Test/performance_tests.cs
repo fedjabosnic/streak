@@ -6,27 +6,21 @@ using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Streak.Store;
+using Streak.Core;
 
 namespace Streak.Test
 {
     [TestClass]
-    public class tests
+    public class performance_tests
     {
-        [TestMethod]
-        public void should_work()
-        {
-            true.Should().Be(true);
-        }
-
-        // NOTE: Below are some preliminary integration tests that hit the hard disk (ignored by default so shouldn't auto-run)
-        //       They are left here for convenience and will be removed later...
+        // NOTE: Below are some preliminary performance tests that hit the hard disk (ignored by default so shouldn't auto-run)
+        // NOTE: They are left here for convenience and will be removed later...
 
         [Ignore]
         [TestMethod]
         public void write()
         {
-            var streak = new Streak.Store.Streak($@"{Environment.CurrentDirectory}\abc", writer: true);
+            var streak = new global::Streak.Core.Streak($@"{Environment.CurrentDirectory}\abc", writer: true);
 
             var es = new List<Event>(1);
 
@@ -50,7 +44,7 @@ namespace Streak.Test
         [TestMethod]
         public void write_batch()
         {
-            var streak = new Streak.Store.Streak($@"{Environment.CurrentDirectory}\abc", writer: true);
+            var streak = new global::Streak.Core.Streak($@"{Environment.CurrentDirectory}\abc", writer: true);
 
             var es = new List<Event>(1000);
 
@@ -83,7 +77,7 @@ namespace Streak.Test
         [TestMethod]
         public void write_bulk()
         {
-            var streak = new Streak.Store.Streak($@"{Environment.CurrentDirectory}\abc", writer: true);
+            var streak = new global::Streak.Core.Streak($@"{Environment.CurrentDirectory}\abc", writer: true);
 
             var es = new List<Event>();
 
@@ -107,7 +101,7 @@ namespace Streak.Test
         [TestMethod]
         public void read()
         {
-            var streak = new Streak.Store.Streak($@"{Environment.CurrentDirectory}\abc", writer: true);
+            var streak = new global::Streak.Core.Streak($@"{Environment.CurrentDirectory}\abc", writer: true);
 
             var timer = new Stopwatch();
 
@@ -129,7 +123,7 @@ namespace Streak.Test
         [TestMethod]
         public void read_write()
         {
-            var streak = new Streak.Store.Streak($@"{Environment.CurrentDirectory}\abc", writer: true);
+            var streak = new global::Streak.Core.Streak($@"{Environment.CurrentDirectory}\abc", writer: true);
 
             Task.Factory.StartNew(() =>
             {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace Streak.Store
+namespace Streak.Core
 {
     public class Streak : IStreak<Event>
     {
@@ -36,6 +36,8 @@ namespace Streak.Store
 
         public IEnumerable<Event> Get(long @from = 1, long to = long.MaxValue, bool continuous = false)
         {
+            if (_reader == null) throw new NotSupportedException();
+
             return _reader.Read(from, to, continuous);
         }
     }
