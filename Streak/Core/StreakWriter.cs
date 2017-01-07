@@ -38,7 +38,7 @@ namespace Streak.Core
 
                 foreach (var e in events)
                 {
-                    // Shoul this be in user space?
+                    // Should this be in user space?
                     e.Position = e.Position != 0 ? e.Position : ++position;
                     e.Timestamp = e.Timestamp != DateTime.MinValue ? e.Timestamp : DateTime.UtcNow;
 
