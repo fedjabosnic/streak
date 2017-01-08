@@ -18,8 +18,8 @@ namespace Streak.Demo
             Console.WriteLine("This is a demo program to show the performance and usage of streaks.");
             Console.WriteLine("");
             Console.WriteLine("This demo will:");
-            Console.WriteLine("- Write 1,000,000 events directly to one stream");
-            Console.WriteLine("- Replicate asynchronously to another stream");
+            Console.WriteLine("- Write events directly to streak 'aaa' in the current directory");
+            Console.WriteLine("- Asynchronously replicate to streak 'bbb' in the current directory");
             Console.WriteLine("");
 
             Console.WriteLine("Press any key to start...");
@@ -31,6 +31,8 @@ namespace Streak.Demo
             var replica = new Core.Streak($@"{Environment.CurrentDirectory}\bbb", writer: true);
 
             original.ReplicateTo(replica);
+
+            var position = original.Length;
 
             Task.Factory.StartNew(() =>
             {
@@ -48,6 +50,8 @@ namespace Streak.Demo
                             Data = $"fsdfsadfsfdsadhfsghdjkafgkjgshdfjkgsdfkjhgasdjkfgsajdfgasjdhfgjasdghfjsagdfjkgasdfjgsdj: {++position:D10}"
                         });
                     }
+
+                    Thread.Sleep(10);
 
                     original.Save(es);
                     es.Clear();
