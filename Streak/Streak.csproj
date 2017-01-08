@@ -50,7 +50,6 @@
     <Compile Include="Core\Streak.cs" />
     <Compile Include="Core\StreakReader.cs" />
     <Compile Include="Core\StreakWriter.cs" />
-    <Compile Include="Tools\Tail.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Streak.nuspec" />
