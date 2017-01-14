@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Streak.Core
 {
-    public class Streak : IStreak<Event>
+    public class Streak : IStreak<Entry>
     {
         private readonly string _path;
 
@@ -27,14 +27,14 @@ namespace Streak.Core
             _writer?.Dispose();
         }
 
-        public void Save(IEnumerable<Event> events)
+        public void Save(IEnumerable<Entry> events)
         {
             if (_writer == null) throw new NotSupportedException();
 
             _writer.Write(events);
         }
 
-        public IEnumerable<Event> Get(long @from = 1, long to = long.MaxValue, bool continuous = false)
+        public IEnumerable<Entry> Get(long @from = 1, long to = long.MaxValue, bool continuous = false)
         {
             if (_reader == null) throw new NotSupportedException();
 

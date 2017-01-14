@@ -34,17 +34,18 @@ namespace Streak.Demo
 
             Task.Factory.StartNew(() =>
             {
-                var es = new List<Event>(1000);
+                var es = new List<Entry>(1000);
+
+                var position = original.Length;
 
                 for (int j = 0; j < 10000; j++)
                 {
                     for (int i = 0; i < 1000; i++)
                     {
-                        es.Add(new Event
+                        es.Add(new Entry
                         {
-                            Type = "Test.Event",
-                            Data = $" Tick: {i}",
-                            Meta = $" CorrelationId: {i}"
+                            // Random (ish) 100 byte data
+                            Data = $"fsdfsadfsfdsadhfsghdjkafgkjgshdfjkgsdfkjhgasdjkfgsajdfgasjdhfgjasdghfjsagdfjkgasdfjgsdj: {++position:D10}"
                         });
                     }
 

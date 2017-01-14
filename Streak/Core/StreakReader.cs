@@ -18,7 +18,7 @@ namespace Streak.Core
         {
         }
 
-        public IEnumerable<Event> Read(long @from = 1, long to = long.MaxValue, bool continuous = false)
+        public IEnumerable<Entry> Read(long @from = 1, long to = long.MaxValue, bool continuous = false)
         {
             using (var index = new FileStream($@"{_path}\main.ind", FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             using (var datas = new FileStream($@"{_path}\main.dat", FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
@@ -42,7 +42,7 @@ namespace Streak.Core
                 // Get any currently available data
                 for (var i = from; i <= exists; i++)
                 {
-                    var e = new Event();
+                    var e = new Entry();
 
                     e.DeserializeFrom(datas);
 
@@ -56,7 +56,7 @@ namespace Streak.Core
                     {
                         while (i > index.Length / 16) Thread.Sleep(10);
 
-                        var e = new Event();
+                        var e = new Entry();
 
                         e.DeserializeFrom(datas);
 

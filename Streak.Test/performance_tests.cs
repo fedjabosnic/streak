@@ -22,7 +22,7 @@ namespace Streak.Test
         {
             var streak = new global::Streak.Core.Streak($@"{Environment.CurrentDirectory}\abc", writer: true);
 
-            var es = new List<Event>(1);
+            var es = new List<Entry>(1);
 
             var timer = new Stopwatch();
 
@@ -30,7 +30,7 @@ namespace Streak.Test
 
             for (int i = 0; i < 1000000; i++)
             {
-                es.Add(new Event { Type = "Test.Event", Data = $" Tick: {i}", Meta = $" CorrelationId: {i}" });
+                es.Add(new Entry { Data = $"fsdfsadfsfdsadhfsghdjkafgkjgshdfjkgsd: {i:D10}" });
                 streak.Save(es);
                 es.Clear();
             }
@@ -46,7 +46,7 @@ namespace Streak.Test
         {
             var streak = new global::Streak.Core.Streak($@"{Environment.CurrentDirectory}\abc", writer: true);
 
-            var es = new List<Event>(1000);
+            var es = new List<Entry>(1000);
 
             var timer = new Stopwatch();
 
@@ -56,12 +56,7 @@ namespace Streak.Test
             {
                 for (int i = 0; i < 1000; i++)
                 {
-                    es.Add(new Event
-                    {
-                        Type = "Test.Event",
-                        Data = $" Tick: {i}",
-                        Meta = $" CorrelationId: {i}"
-                    });
+                    es.Add(new Entry { Data = $"fsdfsadfsfdsadhfsghdjkafgkjgshdfjkgsd: {i:D10}" });
                 }
 
                 streak.Save(es);
@@ -79,11 +74,11 @@ namespace Streak.Test
         {
             var streak = new global::Streak.Core.Streak($@"{Environment.CurrentDirectory}\abc", writer: true);
 
-            var es = new List<Event>();
+            var es = new List<Entry>();
 
             for (int i = 0; i < 1000000; i++)
             {
-                es.Add(new Event { Type = "Test.Event", Data = $" Tick: {i}", Meta = $" CorrelationId: {i}" });
+                es.Add(new Entry { Data = $"fsdfsadfsfdsadhfsghdjkafgkjgshdfjkgsd: {i:D10}" });
             }
 
             var timer = new Stopwatch();
@@ -105,7 +100,7 @@ namespace Streak.Test
 
             var timer = new Stopwatch();
 
-            var es = new List<Event>();
+            var es = new List<Entry>();
 
             timer.Start();
 
@@ -131,14 +126,9 @@ namespace Streak.Test
                 {
                     Thread.Sleep(10);
 
-                    streak.Save(new List<Event>
+                    streak.Save(new List<Entry>
                     {
-                        new Event
-                        {
-                            Type = "Test.Event",
-                            Data = $" Tick: {i}",
-                            Meta = $" CorrelationId: {i}"
-                        }
+                        new Entry { Data = $"fsdfsadfsfdsadhfsghdjkafgkjgshdfjkgsd: {i:D10}" }
                     });
                 }
             }, TaskCreationOptions.LongRunning);

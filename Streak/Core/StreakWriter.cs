@@ -25,7 +25,7 @@ namespace Streak.Core
             _items.Dispose();
         }
 
-        public void Write(IEnumerable<Event> events)
+        public void Write(IEnumerable<Entry> events)
         {
             // TODO: Optimize for small batches as it might be more efficient to write directly to disk
 
