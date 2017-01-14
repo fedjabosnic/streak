@@ -26,6 +26,25 @@ A streak is single writer and multiple reader (both of which can be local or rem
 > We're just getting started here - lots of features planned and hopefully progress will be swift
 
 
+#### Tooling
+
+While streak is intended to be used as a library, it is packaged as a single exe in order to provide some useful tooling out of the box.
+
+From the command line:
+
+- `streak length c:\streaks\abc`
+  - returns the number of entries in the specified streak
+- `streak head -n 3 c:\streaks\abc`
+  - returns the data from the first 3 entries in the specified streak
+- `streak tail -f -n 7 c:\streaks\abc`
+  - returns the data from the last 7 entries in the specified streak
+  - the optional `-f` flag will follow the streak and output entries in real time as they are added
+- `streak replicate -d c:\streaks\rep c:\streaks\abc`
+  - replicates the streak `c:\streaks\abc` to `c:\streaks\rep` in real time
+
+So for example, the `tail -f` command lets you watch entries being added in real time from a remote console whereas `replicate` allows you to asynchronously replicate a streak out of process
+
+
 #### TODO
 
 - Performance improvements
