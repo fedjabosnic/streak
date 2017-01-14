@@ -32,8 +32,6 @@ namespace Streak.Demo
 
             original.ReplicateTo(replica);
 
-            var position = original.Length;
-
             Task.Factory.StartNew(() =>
             {
                 var es = new List<Entry>(1000);
