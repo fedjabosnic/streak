@@ -37,7 +37,8 @@ namespace Streak.Test
 
             timer.Stop();
 
-            Console.WriteLine(timer.ElapsedMilliseconds);
+            Console.WriteLine($"Elaspsed: {timer.ElapsedMilliseconds}");
+            Console.WriteLine($"Rate:     {1000000 / ((double)timer.ElapsedMilliseconds / 1000)} e/s");
         }
 
         [Ignore]
@@ -65,7 +66,8 @@ namespace Streak.Test
 
             timer.Stop();
 
-            Console.WriteLine(timer.ElapsedMilliseconds);
+            Console.WriteLine($"Elaspsed: {timer.ElapsedMilliseconds}");
+            Console.WriteLine($"Rate:     {1000000 / ((double)timer.ElapsedMilliseconds / 1000)} e/s");
         }
 
         [Ignore]
@@ -89,7 +91,8 @@ namespace Streak.Test
 
             timer.Stop();
 
-            Console.WriteLine(timer.ElapsedMilliseconds);
+            Console.WriteLine($"Elaspsed: {timer.ElapsedMilliseconds}");
+            Console.WriteLine($"Rate:     {1000000 / ((double)timer.ElapsedMilliseconds / 1000)} e/s");
         }
 
         [Ignore]
