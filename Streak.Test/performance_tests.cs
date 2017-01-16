@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Streak.Core;
 
@@ -37,8 +35,8 @@ namespace Streak.Test
 
             timer.Stop();
 
-            Console.WriteLine($"Elaspsed: {timer.ElapsedMilliseconds}");
-            Console.WriteLine($"Rate:     {1000000 / ((double)timer.ElapsedMilliseconds / 1000)} e/s");
+            Console.WriteLine($"Elapsed: {timer.ElapsedMilliseconds}");
+            Console.WriteLine($"Rate:    {1000000 / ((double)timer.ElapsedMilliseconds / 1000)} e/s");
         }
 
         [Ignore]
@@ -66,8 +64,8 @@ namespace Streak.Test
 
             timer.Stop();
 
-            Console.WriteLine($"Elaspsed: {timer.ElapsedMilliseconds}");
-            Console.WriteLine($"Rate:     {1000000 / ((double)timer.ElapsedMilliseconds / 1000)} e/s");
+            Console.WriteLine($"Elapsed: {timer.ElapsedMilliseconds}");
+            Console.WriteLine($"Rate:    {1000000 / ((double)timer.ElapsedMilliseconds / 1000)} e/s");
         }
 
         [Ignore]
@@ -91,8 +89,8 @@ namespace Streak.Test
 
             timer.Stop();
 
-            Console.WriteLine($"Elaspsed: {timer.ElapsedMilliseconds}");
-            Console.WriteLine($"Rate:     {1000000 / ((double)timer.ElapsedMilliseconds / 1000)} e/s");
+            Console.WriteLine($"Elapsed: {timer.ElapsedMilliseconds}");
+            Console.WriteLine($"Rate:    {1000000 / ((double)timer.ElapsedMilliseconds / 1000)} e/s");
         }
 
         [Ignore]
@@ -114,7 +112,8 @@ namespace Streak.Test
 
             timer.Stop();
 
-            Console.WriteLine(timer.ElapsedMilliseconds);
+            Console.WriteLine($"Elapsed: {timer.ElapsedMilliseconds}");
+            Console.WriteLine($"Rate:    {es.Count / ((double)timer.ElapsedMilliseconds / 1000)} e/s");
         }
 
         [Ignore]
