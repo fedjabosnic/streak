@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Streak.Core
 {
-    public class Streak : IStreak<Entry>
+    public class Streak : IStreak
     {
         private readonly string _path;
 
