@@ -11,8 +11,8 @@ namespace Streak.Test.Core.Streak
     [TestClass]
     public class reading_a_streak_subset
     {
-        private IStreak<Entry> reader;
-        private IStreak<Entry> writer;
+        private IStreak reader;
+        private IStreak writer;
 
         private List<Entry> output;
 

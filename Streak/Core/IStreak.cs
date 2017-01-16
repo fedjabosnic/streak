@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Streak.Core
 {
-    public interface IStreak<T> : IDisposable
+    public interface IStreak : IDisposable
     {
         /// <summary> Returns the number of events in the streak. </summary>
         long Length { get; }
@@ -13,7 +13,7 @@ namespace Streak.Core
         /// single event results in all events failing to save.
         /// </summary>
         /// <param name="events">The events to save.</param>
-        void Save(IEnumerable<T> events);
+        void Save(IEnumerable<Entry> events);
 
         /// <summary>
         /// Gets a live enumerable of events between the 'from' and 'to' positions (inclusive). Optionally, if 'continuous' is specified
@@ -23,6 +23,6 @@ namespace Streak.Core
         /// <param name="to">The position to get events to.</param>
         /// <param name="continuous">Whether this is a continuous query.</param>
         /// <returns>A live enumerable of events.</returns>
-        IEnumerable<T> Get(long from = 1, long to = long.MaxValue, bool continuous = false);
+        IEnumerable<Entry> Get(long from = 1, long to = long.MaxValue, bool continuous = false);
     }
 }

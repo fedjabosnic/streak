@@ -9,7 +9,7 @@ namespace Streak.Dsl
 {
     public static class Replication
     {
-        public static IStreak<T> ReplicateTo<T>(this IStreak<T> source, IStreak<T> destination, int chunk = 1)
+        public static IStreak ReplicateTo(this IStreak source, IStreak destination, int chunk = 1)
         {
             Task.Factory.StartNew(() =>
             {
@@ -18,7 +18,7 @@ namespace Streak.Dsl
                     try
                     {
                         var count = 0;
-                        var batch = new List<T>(chunk);
+                        var batch = new List<Entry>(chunk);
 
                         foreach (var e in source.Get(from: destination.Length + 1, to: long.MaxValue, continuous: true))
                         {
