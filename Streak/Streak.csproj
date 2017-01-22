@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -45,6 +47,11 @@
     <Compile Include="Core\Streak.cs" />
     <Compile Include="Core\StreakReader.cs" />
     <Compile Include="Core\StreakWriter.cs" />
+    <Compile Include="V2\OS\IFile.cs" />
+    <Compile Include="V2\Writer\Index.cs" />
+    <Compile Include="V2\Writer\Streak.cs" />
+    <Compile Include="V2\Reader\Index.cs" />
+    <Compile Include="V2\Reader\Streak.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Streak.nuspec" />

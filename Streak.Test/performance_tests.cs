@@ -14,7 +14,32 @@ namespace Streak.Test
         // NOTE: Below are some preliminary performance tests that hit the hard disk (ignored by default so shouldn't auto-run)
         // NOTE: They are left here for convenience and will be removed later...
 
-        [Ignore]
+        //[Ignore]
+        [TestMethod]
+        public void write_singles()
+        {
+            var streak = new global::Streak.Core.Streak($@"{Environment.CurrentDirectory}\def", writer: true);
+
+            var es = new List<Entry>(1);
+
+            var timer = new Stopwatch();
+
+            timer.Start();
+
+            for (int i = 0; i < 1000000; i++)
+            {
+                var entry = new Entry { Data = $"fsdfsadfsfdsadhfsghdjkafgkjgshdfjkgsd: {i:D10}" };
+                streak.Save(entry);
+                //es.Clear();
+            }
+
+            timer.Stop();
+
+            Console.WriteLine($"Elapsed: {timer.ElapsedMilliseconds}");
+            Console.WriteLine($"Rate:    {1000000 / ((double)timer.ElapsedMilliseconds / 1000)} e/s");
+        }
+
+        //[Ignore]
         [TestMethod]
         public void write()
         {
@@ -93,11 +118,11 @@ namespace Streak.Test
             Console.WriteLine($"Rate:    {1000000 / ((double)timer.ElapsedMilliseconds / 1000)} e/s");
         }
 
-        [Ignore]
+        //[Ignore]
         [TestMethod]
         public void read()
         {
-            var streak = new global::Streak.Core.Streak($@"{Environment.CurrentDirectory}\abc", writer: true);
+            var streak = new global::Streak.Core.Streak($@"{Environment.CurrentDirectory}\def", writer: true);
 
             var timer = new Stopwatch();
 

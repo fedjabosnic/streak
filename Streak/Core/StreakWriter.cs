@@ -32,6 +32,11 @@ namespace Streak.Core
             _items.Dispose();
         }
 
+        public void Write(Entry entry)
+        {
+            WriteDirect(entry);
+        }
+
         public void Write(IEnumerable<Entry> events)
         {
             var all = events.ToList();
@@ -42,6 +47,31 @@ namespace Streak.Core
                 WriteBuffered(all);
         }
 
+        private void WriteDirect(Entry entry)
+        {
+            var position = _indexLength / 16;
+            var offset = _itemsLength;
+
+            // Should this be in user space?
+            entry.Position = ++position;
+            entry.Timestamp = DateTime.UtcNow;
+
+            // Write data (consider a serializer abstraction)
+            var length = entry.SerializeTo(_items);
+
+            // Write index (improve this)
+            _index.Write(BitConverter.GetBytes(offset), 0, 8);
+            _index.Write(BitConverter.GetBytes(offset += length), 0, 8);
+
+            // Flush files
+            _items.Flush();
+            _index.Flush();
+
+            // Update offsets
+            _itemsLength += offset;
+            _indexLength += 16;
+        }
+
         private void WriteDirect(List<Entry> events)
         {
             var position = _indexLength / 16;
@@ -50,8 +80,8 @@ namespace Streak.Core
             foreach (var e in events)
             {
                 // Should this be in user space?
-                e.Position = e.Position != 0 ? e.Position : ++position;
-                e.Timestamp = e.Timestamp != DateTime.MinValue ? e.Timestamp : DateTime.UtcNow;
+                e.Position = ++position;
+                e.Timestamp = DateTime.UtcNow;
 
                 // Write data (consider a serializer abstraction)
                 var length = e.SerializeTo(_items);

@@ -76,6 +76,7 @@
     <Compile Include="..\.common\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="performance_tests_v2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\Streak\reading_a_streak.cs" />
     <Compile Include="Core\Streak\reading_a_streak_subset.cs" />

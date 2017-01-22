@@ -8,6 +8,8 @@ namespace Streak.Core
         /// <summary> Returns the number of events in the streak. </summary>
         long Length { get; }
 
+        void Save(Entry entry);
+
         /// <summary>
         /// Saves the specified events into the stream. The operation is pesimistically concurrent, where a failure to insert any
         /// single event results in all events failing to save.

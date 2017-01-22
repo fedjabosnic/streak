@@ -27,6 +27,13 @@ namespace Streak.Core
             _writer?.Dispose();
         }
 
+        public void Save(Entry entry)
+        {
+            if (_writer == null) throw new NotSupportedException();
+
+            _writer.Write(entry);
+        }
+
         public void Save(IEnumerable<Entry> events)
         {
             if (_writer == null) throw new NotSupportedException();
