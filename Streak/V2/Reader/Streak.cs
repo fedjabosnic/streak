@@ -29,14 +29,19 @@ namespace Streak.V2.Reader
             _offset += delta;
         }
 
+        private readonly byte[] temp = new byte[16000000];
+
         public Entry Next()
         {
-            // Get index and prepare data buffer
             var index = _index.Next();
             var data = new byte[index.End - index.Start];
 
             // Read data from the file
-            _file.Read(data, 0, data.Length);
+            var read = 0;
+            while ((read = _file.Read(data, 0 + read, data.Length - read)) != data.Length)
+            {
+            }
+
             _offset += data.Length;
 
             // Create and return entry

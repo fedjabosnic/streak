@@ -71,9 +71,11 @@ namespace Streak.Demo
 
             var times = new List<long>();
 
+            var writer = new V2.Writer.Streak($@"{Environment.CurrentDirectory}\aaa");
+
             Task.Factory.StartNew(() =>
             {
-                var writer = new V2.Writer.Streak($@"{Environment.CurrentDirectory}\aaa");
+                
 
                 for (int i = 0; i < 100000000; i++)
                 {
@@ -90,7 +92,7 @@ namespace Streak.Demo
 
             Task.Factory.StartNew(() =>
             {
-                Thread.Sleep(1000);
+                //Thread.Sleep(1000);
 
                 var reader = new V2.Reader.Streak($@"{Environment.CurrentDirectory}\aaa");
 
@@ -116,7 +118,7 @@ namespace Streak.Demo
                 var rs = Interlocked.Exchange(ref read, 0L);
 
                 // Some weirdness causes huge deltas even though they aren't true
-                ts.RemoveAll(x => x > 10000000);
+                ts.RemoveAll(x => x > 100000000);
 
                 Console.Clear();
                 Console.WriteLine($"{DateTime.UtcNow:HH:mm:ss.fff}:> Entries (w/r): {ws:D10} <-> {rs:D10}");
@@ -126,7 +128,7 @@ namespace Streak.Demo
                 Thread.Sleep(1000);
             }
 
-
+            Console.ReadLine();
 
             Console.WriteLine("Streak demo");
             Console.WriteLine("-----------");
@@ -199,8 +201,8 @@ namespace Streak.Demo
                 {
                     throw new InvalidOperationException("High resolution clock isn't available.");
                 }
-                long filetime;
-                GetSystemTimePreciseAsFileTime(out filetime);
+
+                GetSystemTimePreciseAsFileTime(out long filetime);
                 return DateTime.FromFileTimeUtc(filetime);
             }
         }
@@ -208,8 +210,7 @@ namespace Streak.Demo
         {
             try
             {
-                long filetime;
-                GetSystemTimePreciseAsFileTime(out filetime);
+                GetSystemTimePreciseAsFileTime(out long _);
                 IsAvailable = true;
             }
             catch (EntryPointNotFoundException)

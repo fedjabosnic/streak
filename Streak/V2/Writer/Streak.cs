@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using Streak.V2.OS;
 
 namespace Streak.V2.Writer
 {
@@ -9,7 +10,7 @@ namespace Streak.V2.Writer
     {
         private long _offset;
         private readonly Index _index;
-        private readonly FileStream _file;
+        private readonly IFileWriter _file;
 
         private int _dirty;
 
@@ -17,7 +18,7 @@ namespace Streak.V2.Writer
         {
             // Open file and create index
             _index = new Index(path);
-            _file = new FileStream(path + @"\main.dat", FileMode.Append, FileAccess.Write, FileShare.Read, 512000, FileOptions.SequentialScan);
+            _file = new FileWriter(path + @"\main.dat");
 
             // Set offset
             _offset = _file.Length;
@@ -26,11 +27,11 @@ namespace Streak.V2.Writer
             {
                 while (true)
                 {
-                    Thread.Sleep(100);
+                    Thread.Sleep(1);
 
                     lock(_file)
                     {
-                        if (_dirty > 0) _file.Flush();
+                        if (_dirty > 0) Flush();
                     }
                 }
             }, TaskCreationOptions.LongRunning);
@@ -41,10 +42,10 @@ namespace Streak.V2.Writer
             lock (_file)
             {
                 // Write data
-                _file.Write(entry.Data, 0, entry.Data.Length);
+                _file.Write(entry.Data);//, 0, entry.Data.Length);
                 _dirty++;
 
-                if (_dirty % 100 == 0) _file.Flush();
+                //if (_dirty % 100 == 0) Flush();
 
                 // Update index
                 _index.Append(_offset, _offset + entry.Data.Length);
@@ -56,8 +57,13 @@ namespace Streak.V2.Writer
 
         public void Flush()
         {
-            //_file.Flush();
-            //_index.Flush();
+            lock (_file)
+            {
+                _file.Flush();
+                _index.Flush();
+                _dirty = 0;
+                //_index.Flush();
+            }
         }
 
         public struct Entry

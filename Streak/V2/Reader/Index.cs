@@ -38,10 +38,9 @@ namespace Streak.V2.Reader
 
         internal Entry Next()
         {
-            while (_file.Read(_buffer, 0, 16) != 16)
+            var read = 0;
+            while ((read = _file.Read(_buffer, 0 + read, _buffer.Length - read)) != _buffer.Length)
             {
-                //Debug.WriteLine("Bugger");
-                //Thread.Sleep(1);
             }
 
             _offset++;

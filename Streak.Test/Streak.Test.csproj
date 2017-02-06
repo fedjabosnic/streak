@@ -81,6 +81,7 @@
     <Compile Include="Core\Streak\reading_a_streak.cs" />
     <Compile Include="Core\Streak\reading_a_streak_subset.cs" />
     <Compile Include="performance_tests.cs" />
+    <Compile Include="performance_tests_v4.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Streak\Streak.csproj">
