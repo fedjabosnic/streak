@@ -19,6 +19,7 @@ namespace Streak.Test
         // NOTE: Below are some preliminary performance tests that hit the hard disk (ignored by default so shouldn't auto-run)
         // NOTE: They are left here for convenience and will be removed later...
 
+        [Ignore]
         [TestMethod]
         public void file_rename_test()
         {
@@ -58,6 +59,7 @@ namespace Streak.Test
             Console.WriteLine($"         {((double)timer.ElapsedTicks / Stopwatch.Frequency) / count * 1000000} micros per entry");
         }
 
+        [Ignore]
         [TestMethod]
         public void file_flush_test()
         {
@@ -138,7 +140,7 @@ namespace Streak.Test
             Thread.Sleep(3000);
         }
 
-        //[Ignore]
+        [Ignore]
         [TestMethod]
         public void write_raw()
         {
@@ -170,6 +172,7 @@ namespace Streak.Test
             Console.WriteLine($"         {((double)timer.ElapsedTicks / Stopwatch.Frequency) / count * 1000000} micros per entry");
         }
 
+        [Ignore]
         [TestMethod]
         public void write_string()
         {
@@ -199,7 +202,7 @@ namespace Streak.Test
             Console.WriteLine($"         {((double)timer.ElapsedTicks / Stopwatch.Frequency) / count * 1000000} micros per entry");
         }
 
-        //[Ignore]
+        [Ignore]
         [TestMethod]
         public void read_raw()
         {
@@ -224,6 +227,7 @@ namespace Streak.Test
             Console.WriteLine($"         {((double)timer.ElapsedTicks / Stopwatch.Frequency) / count * 1000000} micros per entry");
         }
 
+        [Ignore]
         [TestMethod]
         public void read_string()
         {
@@ -248,7 +252,7 @@ namespace Streak.Test
             Console.WriteLine($"         {((double)timer.ElapsedTicks / Stopwatch.Frequency) / count * 1000000} micros per entry");
         }
 
-        //[Ignore]
+        [Ignore]
         [TestMethod]
         public void read_write()
         {

@@ -15,7 +15,7 @@ namespace Streak.Test
         private readonly int count = 1000000;
         private readonly Encoding encoding = new UTF8Encoding();
 
-        //[Ignore]
+        [Ignore]
         [TestMethod]
         public void write_raw()
         {

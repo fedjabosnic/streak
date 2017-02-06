@@ -14,7 +14,7 @@ namespace Streak.Test
         // NOTE: Below are some preliminary performance tests that hit the hard disk (ignored by default so shouldn't auto-run)
         // NOTE: They are left here for convenience and will be removed later...
 
-        //[Ignore]
+        [Ignore]
         [TestMethod]
         public void write_singles()
         {
@@ -39,7 +39,7 @@ namespace Streak.Test
             Console.WriteLine($"Rate:    {1000000 / ((double)timer.ElapsedMilliseconds / 1000)} e/s");
         }
 
-        //[Ignore]
+        [Ignore]
         [TestMethod]
         public void write()
         {
@@ -118,7 +118,7 @@ namespace Streak.Test
             Console.WriteLine($"Rate:    {1000000 / ((double)timer.ElapsedMilliseconds / 1000)} e/s");
         }
 
-        //[Ignore]
+        [Ignore]
         [TestMethod]
         public void read()
         {
