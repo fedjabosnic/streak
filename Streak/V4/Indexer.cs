@@ -10,10 +10,10 @@ namespace Streak.V4
         public Indexer(IFileWriter file)
         {
             _file = file;
-            _buffer = new byte[SegmentInfo.Size];
+            _buffer = new byte[FileSegmentInfo.Size];
         }
 
-        public unsafe Index Append(SegmentInfo location)
+        public unsafe Index Append(FileSegmentInfo location)
         {
             fixed (byte* b = _buffer) *(long*)(b + 0) = location.Length;
             fixed (byte* b = _buffer) *(long*)(b + 8) = location.Offset;

@@ -4,6 +4,6 @@ namespace Streak.V4
 {
     public interface IJournaler : ICommittable
     {
-        SegmentInfo Append(byte[] data);
+        FileSegmentInfo Append(byte[] data);
     }
 }

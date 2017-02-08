@@ -11,7 +11,7 @@ namespace Streak.V4
             _file = file;
         }
 
-        public SegmentInfo Append(byte[] data)
+        public FileSegmentInfo Append(byte[] data)
         {
             return _file.Write(data);
         }

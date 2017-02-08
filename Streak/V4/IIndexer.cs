@@ -4,6 +4,6 @@ namespace Streak.V4
 {
     public interface IIndexer : ICommittable
     {
-        Index Append(SegmentInfo location);
+        Index Append(FileSegmentInfo location);
     }
 }

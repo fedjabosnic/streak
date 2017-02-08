@@ -54,6 +54,7 @@
     <Compile Include="V2\OS\IFile.cs" />
     <Compile Include="V2\OS\IFileReader.cs" />
     <Compile Include="V2\OS\IFileWriter.cs" />
+    <Compile Include="V2\OS\FileSegmentInfo.cs" />
     <Compile Include="V2\Writer\Index.cs" />
     <Compile Include="V2\Writer\Streak.cs" />
     <Compile Include="V2\Reader\Index.cs" />

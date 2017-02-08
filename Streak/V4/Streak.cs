@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Streak.V4
 {
@@ -19,12 +14,46 @@ namespace Streak.V4
         public byte[] Data { get; set; }
     }
 
+    public class StreakInfo
+    {
+        public string Name { get; set; }
+        public string Path { get; set; }
+
+        public decimal Size { get; set; }
+        public decimal Length { get; set; }
+
+        public IndexInfo Index { get; set; }
+        public JournalInfo Journal { get; set; }
+    }
+
+    public class IndexInfo
+    {
+        public string Name { get; set; }
+        public string Path { get; set; }
+
+        public decimal Size { get; set; }
+    }
+
+    public class JournalInfo
+    {
+        public string Name { get; set; }
+        public string Path { get; set; }
+
+        public decimal Size { get; set; }
+    }
+
     public class Streak
     {
         private readonly IIndexer _indexer;
         private readonly IJournaler _journaler;
         private readonly ICommitter _committer;
 
+        /// <summary>
+        /// Instantiates a new streak with the provided indexer, journaler and committer.
+        /// </summary>
+        /// <param name="indexer">The indexer.</param>
+        /// <param name="journaler">The journaler.</param>
+        /// <param name="committer">The committer.</param>
         public Streak(IIndexer indexer, IJournaler journaler, ICommitter committer)
         {
             _indexer = indexer;
@@ -34,6 +63,14 @@ namespace Streak.V4
             _committer.Register(Commit);
         }
 
+        /// <summary>
+        /// Appends the entry to the streak.
+        /// <remarks>
+        /// The entry will not be available to readers until it is committed.
+        /// </remarks>
+        /// </summary>
+        /// <param name="entry">The entry to append.</param>
+        /// <returns>The position in the streak where this entry will be added.</returns>
         public long Append(Entry entry)
         {
             lock (_journaler)
@@ -48,6 +85,9 @@ namespace Streak.V4
             }
         }
 
+        /// <summary>
+        /// Commits all uncommitted entries.
+        /// </summary>
         public void Commit()
         {
             lock (_journaler)
