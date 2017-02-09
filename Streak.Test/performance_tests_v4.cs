@@ -12,7 +12,7 @@ namespace Streak.Test
     [TestClass]
     public class performance_tests_v4
     {
-        private readonly int count = 10000000;
+        private readonly int count = 1000000;
         private readonly Encoding encoding = new UTF8Encoding();
         private Random random = new Random();
 
@@ -93,7 +93,7 @@ namespace Streak.Test
             {
                 //j++;
                 appender.Append(entry);
-                //if (j % 1000 == 0) appender.Commit();
+                //appender.Commit();
                 //var position = streak.Append(new Entry { Data = entry });
                 //if (position % 1000 == 0) streak.Commit();
             }

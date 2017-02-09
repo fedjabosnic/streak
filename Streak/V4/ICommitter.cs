@@ -295,9 +295,15 @@ namespace Streak.V4
     internal class BufferThing
     {
         public int writing;
-        public int written;
+        public int pending;
         public Buffer A;
         public Buffer B;
+    }
+
+    public class IndexedJournal
+    {
+        public IWritableStream Index { get; set; }
+        public IWritableStream Journal { get; set; }
     }
 
     public class DoubleBufferedStreamCommitter : IStreamCommitter
@@ -320,7 +326,7 @@ namespace Streak.V4
             {
                 while (true)
                 {
-                    Thread.Sleep(1);
+                    SpinWait.SpinUntil(() => Volatile.Read(ref _primary.pending) > 1, 1);
                     Commit();
                 }
             }, TaskCreationOptions.LongRunning);
@@ -328,11 +334,19 @@ namespace Streak.V4
 
         public void Append(byte[] index, byte[] data)
         {
+            // Get reference to buffer
             var buffer = _primary;
 
+            // Set the writing flag
             Interlocked.Increment(ref buffer.writing);
+
+            // Add data to buffers
             buffer.A.Add(data);
             buffer.B.Add(index);
+
+            Interlocked.Increment(ref buffer.pending);
+
+            // Unset the writing flag
             Interlocked.Decrement(ref buffer.writing);
         }
 
@@ -340,14 +354,20 @@ namespace Streak.V4
 
         public unsafe void Append(long x, byte[] data)
         {
+            // Get reference to buffer
             var buffer = _primary;
 
+            // Set the writing flag
             Interlocked.Increment(ref buffer.writing);
 
+            // Add data to buffers
             fixed (byte* b = _buffer) *(long*)(b + 0) = x;
             buffer.A.Add(data);
             buffer.B.Add(_buffer);
 
+            Interlocked.Increment(ref buffer.pending);
+
+            // Unset the writing flag
             Interlocked.Decrement(ref buffer.writing);
         }
 
@@ -355,28 +375,29 @@ namespace Streak.V4
         {
             lock (_buffer)
             {
-                //Stopwatch sw = new Stopwatch();
-
-                //sw.Start();
-
+                // Atomically swap the two buffers so that we can process accumulated data
                 _secondary = Interlocked.Exchange(ref _primary, _secondary);
 
-                var waited = 0;
-                while (Thread.VolatileRead(ref _secondary.writing) > 0)
-                {
-                    // Wait until any currently running writer finishes
-                    waited++;
-                }
+                // At this point, even though we have atomically swapped the buffers it's possible for
+                // an append operation to still be running over the buffer we need to process. To account
+                // for this, we kindly wait until any currently running writer finishes (see append method).
+                while (Thread.VolatileRead(ref _secondary.writing) > 0) { }
 
-               // var amount = _secondary.A.Length;
+                // Append buffered data to files
                 Journal.Append(_secondary.A.Data, 0, _secondary.A.Length);
                 Index.Append(_secondary.B.Data, 0, _secondary.B.Length);
 
+                // Flush files
                 Journal.Flush();
                 Index.Flush();
 
+                // Clear buffers
                 _secondary.A.Clear();
                 _secondary.B.Clear();
+
+                if (_secondary.pending != 0) Console.WriteLine($"Committed " + _secondary.pending);
+
+                _secondary.pending = 0;
 
                 //sw.Stop();
 
@@ -388,14 +409,19 @@ namespace Streak.V4
 
     public class Appender
     {
+        private long _position;
+
+        public long Position => Volatile.Read(ref _position);
+
         internal IStreamCommitter Committer { get; }
 
         public Appender(IStreamCommitter committer)
         {
             Committer = committer;
+            _position = 0;
         }
 
-        public unsafe void Append(Entry entry)
+        public unsafe long Append(Entry entry)
         {
             //var index = new byte[16];
 
@@ -403,11 +429,19 @@ namespace Streak.V4
             //fixed (byte* b = index) *(long*)(b + 8) = 474545;
 
             Committer.Append(15, entry.Data);
+
+            return ++_position;
         }
 
         public void Commit()
         {
             Committer.Commit();
         }
+    }
+
+    public interface IAccumulator<T>
+    {
+        void Append(T item);
+        void Commit();
     }
 }
