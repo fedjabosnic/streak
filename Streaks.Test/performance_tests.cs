@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Streak.Core;
+using Streaks.Core;
 
-namespace Streak.Test
+namespace Streaks.Test
 {
     [TestClass]
     public class performance_tests
@@ -18,7 +18,7 @@ namespace Streak.Test
         [TestMethod]
         public void write()
         {
-            var streak = new global::Streak.Core.Streak($@"{Environment.CurrentDirectory}\abc", writer: true);
+            var streak = new global::Streaks.Streak($@"{Environment.CurrentDirectory}\abc", writer: true);
 
             var es = new List<Entry>(1);
 
@@ -43,7 +43,7 @@ namespace Streak.Test
         [TestMethod]
         public void write_batch()
         {
-            var streak = new global::Streak.Core.Streak($@"{Environment.CurrentDirectory}\abc", writer: true);
+            var streak = new global::Streaks.Streak($@"{Environment.CurrentDirectory}\abc", writer: true);
 
             var es = new List<Entry>(1000);
 
@@ -72,7 +72,7 @@ namespace Streak.Test
         [TestMethod]
         public void write_bulk()
         {
-            var streak = new global::Streak.Core.Streak($@"{Environment.CurrentDirectory}\abc", writer: true);
+            var streak = new global::Streaks.Streak($@"{Environment.CurrentDirectory}\abc", writer: true);
 
             var es = new List<Entry>();
 
@@ -97,7 +97,7 @@ namespace Streak.Test
         [TestMethod]
         public void read()
         {
-            var streak = new global::Streak.Core.Streak($@"{Environment.CurrentDirectory}\abc", writer: true);
+            var streak = new global::Streaks.Streak($@"{Environment.CurrentDirectory}\abc", writer: true);
 
             var timer = new Stopwatch();
 
@@ -120,7 +120,7 @@ namespace Streak.Test
         [TestMethod]
         public void read_write()
         {
-            var streak = new global::Streak.Core.Streak($@"{Environment.CurrentDirectory}\abc", writer: true);
+            var streak = new global::Streaks.Streak($@"{Environment.CurrentDirectory}\abc", writer: true);
 
             Task.Factory.StartNew(() =>
             {
@@ -137,7 +137,7 @@ namespace Streak.Test
 
             Thread.Sleep(3000);
 
-            foreach (var e in streak.Get(from: 100, to: 200, continuous: true))
+            foreach (var e in streak.Get(@from: 100, to: 200, continuous: true))
             {
                 if (e.Position % 100000 == 0) Debug.WriteLine($"{DateTime.UtcNow.TimeOfDay} Got {e.Position}");
             }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Streak.Core
+namespace Streaks.Core
 {
     public interface IStreak : IDisposable
     {

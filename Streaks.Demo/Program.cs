@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Streak.Core;
-using Streak.Dsl;
+using Streaks.Core;
+using Streaks.Dsl;
 
-namespace Streak.Demo
+namespace Streaks.Demo
 {
     class Program
     {
@@ -27,8 +25,8 @@ namespace Streak.Demo
 
             Console.ReadKey();
 
-            var original = new Core.Streak($@"{Environment.CurrentDirectory}\aaa", writer: true);
-            var replica = new Core.Streak($@"{Environment.CurrentDirectory}\bbb", writer: true);
+            var original = new Streak($@"{Environment.CurrentDirectory}\aaa", writer: true);
+            var replica = new Streak($@"{Environment.CurrentDirectory}\bbb", writer: true);
 
             original.ReplicateTo(replica);
 

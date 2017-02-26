@@ -1,8 +1,8 @@
-# Streak
+# Streaks
 
 [![Build status](https://ci.appveyor.com/api/projects/status/upradamdnf1deiq3?svg=true)](https://ci.appveyor.com/project/fedjabosnic/streak)
 
-A high performance event processing library.
+A high performance general use event sourcing library.
 
 Streak allows you to write to and read from file-backed *event streams*, called streaks (essentially append-only logs).
 

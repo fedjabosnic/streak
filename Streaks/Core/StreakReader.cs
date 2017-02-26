@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 
-namespace Streak.Core
+namespace Streaks.Core
 {
     public class StreakReader : IDisposable
     {

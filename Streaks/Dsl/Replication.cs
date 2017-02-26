@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using Streak.Core;
+using Streaks.Core;
 
-namespace Streak.Dsl
+namespace Streaks.Dsl
 {
     public static class Replication
     {
@@ -20,7 +20,7 @@ namespace Streak.Dsl
                         var count = 0;
                         var batch = new List<Entry>(chunk);
 
-                        foreach (var e in source.Get(from: destination.Length + 1, to: long.MaxValue, continuous: true))
+                        foreach (var e in source.Get(@from: destination.Length + 1, to: long.MaxValue, continuous: true))
                         {
                             batch.Add(e);
                             count++;

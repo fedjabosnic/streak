@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 
-namespace Streak.Core
+namespace Streaks.Core
 {
     public class Entry
     {

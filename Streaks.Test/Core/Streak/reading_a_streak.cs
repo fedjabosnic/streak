@@ -4,12 +4,12 @@ using System.IO;
 using System.Linq;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Streak.Core;
+using Streaks.Core;
 
-namespace Streak.Test.Core.Streak
+namespace Streaks.Test.Core.Streak
 {
     [TestClass]
-    public class reading_a_streak_subset
+    public class reading_a_streak
     {
         private IStreak reader;
         private IStreak writer;
@@ -19,22 +19,20 @@ namespace Streak.Test.Core.Streak
         [TestInitialize]
         public void Setup()
         {
-            writer = new global::Streak.Core.Streak(Environment.CurrentDirectory, writer: true);
+            writer = new global::Streaks.Streak(Environment.CurrentDirectory, writer: true);
 
             var input = new List<Entry>
             {
                 new Entry { Data = "test data 1" },
                 new Entry { Data = "test data 2" },
-                new Entry { Data = "test data 3" },
-                new Entry { Data = "test data 4" },
-                new Entry { Data = "test data 5" }
+                new Entry { Data = "test data 3" }
             };
 
             writer.Save(input);
 
-            reader = new global::Streak.Core.Streak(Environment.CurrentDirectory);
+            reader = new global::Streaks.Streak(Environment.CurrentDirectory);
 
-            output = reader.Get(@from: 2, to: 4).ToList();
+            output = reader.Get().ToList();
         }
 
         [TestCleanup]
@@ -56,9 +54,9 @@ namespace Streak.Test.Core.Streak
         [TestMethod]
         public void should_return_the_correct_position_for_each_event()
         {
-            output[0].Position.Should().Be(2);
-            output[1].Position.Should().Be(3);
-            output[2].Position.Should().Be(4);
+            output[0].Position.Should().Be(1);
+            output[1].Position.Should().Be(2);
+            output[2].Position.Should().Be(3);
         }
 
         [TestMethod]
@@ -70,9 +68,9 @@ namespace Streak.Test.Core.Streak
         [TestMethod]
         public void should_return_the_correct_data_for_each_event()
         {
-            output[0].Data.Should().Be("test data 2");
-            output[1].Data.Should().Be("test data 3");
-            output[2].Data.Should().Be("test data 4");
+            output[0].Data.Should().Be("test data 1");
+            output[1].Data.Should().Be("test data 2");
+            output[2].Data.Should().Be("test data 3");
         }
     }
 }

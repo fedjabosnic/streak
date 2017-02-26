@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Streaks.Core;
 
-namespace Streak.Core
+namespace Streaks
 {
     public class Streak : IStreak
     {
