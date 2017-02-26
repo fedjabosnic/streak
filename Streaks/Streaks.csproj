@@ -45,6 +45,8 @@
     <Compile Include="Streak.cs" />
     <Compile Include="Core\StreakReader.cs" />
     <Compile Include="Core\StreakWriter.cs" />
+    <Compile Include="Utilities\Clock.cs" />
+    <Compile Include="Utilities\IClock.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Streaks.nuspec" />
