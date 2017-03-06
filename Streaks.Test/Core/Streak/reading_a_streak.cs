@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Streaks.Core;
@@ -11,28 +12,29 @@ namespace Streaks.Test.Core.Streak
     [TestClass]
     public class reading_a_streak
     {
-        private IStreak reader;
-        private IStreak writer;
+        private string path = $@"{Environment.CurrentDirectory}\reading_a_streak";
 
-        private List<Entry> output;
+        private IStreakReader reader;
+        private IStreakWriter writer;
+
+        private List<byte[]> output = new List<byte[]>();
 
         [TestInitialize]
         public void Setup()
         {
-            writer = new global::Streaks.Streak(Environment.CurrentDirectory, writer: true);
+            var streak = Streaks.Streak.Open(path);
 
-            var input = new List<Entry>
-            {
-                new Entry { Data = "test data 1" },
-                new Entry { Data = "test data 2" },
-                new Entry { Data = "test data 3" }
-            };
+            writer = streak.Writer();
 
-            writer.Save(input);
+            writer.Write(Encoding.UTF8.GetBytes("aaa"));
+            writer.Write(Encoding.UTF8.GetBytes("bbb"));
+            writer.Write(Encoding.UTF8.GetBytes("ccc"));
 
-            reader = new global::Streaks.Streak(Environment.CurrentDirectory);
+            reader = streak.Reader();
 
-            output = reader.Get().ToList();
+            output.Add(reader.Read(1));
+            output.Add(reader.Read(2));
+            output.Add(reader.Read(3));
         }
 
         [TestCleanup]
@@ -41,8 +43,7 @@ namespace Streaks.Test.Core.Streak
             reader.Dispose();
             writer.Dispose();
 
-            File.Delete(Environment.CurrentDirectory + @"\main.ind");
-            File.Delete(Environment.CurrentDirectory + @"\main.dat");
+            Directory.Delete(path, true);
         }
 
         [TestMethod]
@@ -54,23 +55,21 @@ namespace Streaks.Test.Core.Streak
         [TestMethod]
         public void should_return_the_correct_position_for_each_event()
         {
-            output[0].Position.Should().Be(1);
-            output[1].Position.Should().Be(2);
-            output[2].Position.Should().Be(3);
+            // TODO
         }
 
         [TestMethod]
         public void should_return_the_correct_timestamp_for_each_event()
         {
-            // TODO: Add time abstraction
+            // TODO
         }
 
         [TestMethod]
         public void should_return_the_correct_data_for_each_event()
         {
-            output[0].Data.Should().Be("test data 1");
-            output[1].Data.Should().Be("test data 2");
-            output[2].Data.Should().Be("test data 3");
+            Encoding.UTF8.GetString(output[0]).Should().Be("aaa");
+            Encoding.UTF8.GetString(output[1]).Should().Be("bbb");
+            Encoding.UTF8.GetString(output[2]).Should().Be("ccc");
         }
     }
 }

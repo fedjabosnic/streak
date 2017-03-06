@@ -13,32 +13,32 @@ namespace Streaks.Dsl
         {
             Task.Factory.StartNew(() =>
             {
-                while (true)
-                {
-                    try
-                    {
-                        var count = 0;
-                        var batch = new List<Entry>(chunk);
+                //while (true)
+                //{
+                //    try
+                //    {
+                //        var count = 0;
+                //        var batch = new List<Entry>(chunk);
 
-                        foreach (var e in source.Get(@from: destination.Length + 1, to: long.MaxValue, continuous: true))
-                        {
-                            batch.Add(e);
-                            count++;
+                //        foreach (var e in source.Get(@from: destination.Length + 1, to: long.MaxValue, continuous: true))
+                //        {
+                //            batch.Add(e);
+                //            count++;
 
-                            if (count % chunk == 0)
-                            {
-                                destination.Save(batch);
-                                batch.Clear();
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.WriteLine($"Replication failed (retrying in a second): {ex}");
+                //            if (count % chunk == 0)
+                //            {
+                //                destination.Save(batch);
+                //                batch.Clear();
+                //            }
+                //        }
+                //    }
+                //    catch (Exception ex)
+                //    {
+                //        Debug.WriteLine($"Replication failed (retrying in a second): {ex}");
 
-                        Thread.Sleep(1000);
-                    }
-                }
+                //        Thread.Sleep(1000);
+                //    }
+                //}
             },
             TaskCreationOptions.LongRunning);
 

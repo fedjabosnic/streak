@@ -25,39 +25,39 @@ namespace Streaks.Demo
 
             Console.ReadKey();
 
-            var original = new Streak($@"{Environment.CurrentDirectory}\aaa", writer: true);
-            var replica = new Streak($@"{Environment.CurrentDirectory}\bbb", writer: true);
+            //var original = new Streak($@"{Environment.CurrentDirectory}\aaa", writer: true);
+            //var replica = new Streak($@"{Environment.CurrentDirectory}\bbb", writer: true);
 
-            original.ReplicateTo(replica);
+            //original.ReplicateTo(replica);
 
-            Task.Factory.StartNew(() =>
-            {
-                var es = new List<Entry>(1000);
+            //Task.Factory.StartNew(() =>
+            //{
+                //var es = new List<Entry>(1000);
 
-                var position = original.Length;
+                //var position = original.Length;
 
-                for (int j = 0; j < 10000; j++)
-                {
-                    for (int i = 0; i < 1000; i++)
-                    {
-                        es.Add(new Entry
-                        {
-                            // Random (ish) 100 byte data
-                            Data = $"fsdfsadfsfdsadhfsghdjkafgkjgshdfjkgsdfkjhgasdjkfgsajdfgasjdhfgjasdghfjsagdfjkgasdfjgsdj: {++position:D10}"
-                        });
-                    }
+                //for (int j = 0; j < 10000; j++)
+                //{
+                //    for (int i = 0; i < 1000; i++)
+                //    {
+                //        es.Add(new Entry
+                //        {
+                //            // Random (ish) 100 byte data
+                //            Data = $"fsdfsadfsfdsadhfsghdjkafgkjgshdfjkgsdfkjhgasdjkfgsajdfgasjdhfgjasdghfjsagdfjkgasdfjgsdj: {++position:D10}"
+                //        });
+                //    }
 
-                    original.Save(es);
-                    es.Clear();
-                }
+                //    original.Save(es);
+                //    es.Clear();
+                //}
 
-            }, TaskCreationOptions.LongRunning);
+            //}, TaskCreationOptions.LongRunning);
 
-            while (replica.Length < 10000000)
-            {
-                Console.WriteLine($"{DateTime.UtcNow.TimeOfDay:g}: {original.Length} <-> {replica.Length}");
-                Thread.Sleep(1000);
-            }
+            //while (replica.Length < 10000000)
+            //{
+            //    Console.WriteLine($"{DateTime.UtcNow.TimeOfDay:g}: {original.Length} <-> {replica.Length}");
+            //    Thread.Sleep(1000);
+            //}
 
             Console.WriteLine("");
             Console.WriteLine("Finished");

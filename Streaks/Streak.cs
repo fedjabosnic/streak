@@ -1,45 +1,58 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using Streaks.Core;
+using Streaks.Core.IO;
+using Streaks.Utilities;
 
 namespace Streaks
 {
-    public class Streak : IStreak
+    public interface IAdvancedStreak : IStreak
     {
-        private readonly string _path;
+        IClock Clock { get; set; }
+    }
 
-        private readonly StreakReader _reader;
-        private readonly StreakWriter _writer;
+    public class Streak : IAdvancedStreak
+    {
+        public string Path { get; }
+        public IClock Clock { get; set; }
 
-        public long Length => new FileInfo($@"{_path}\main.ind").Length / 16;
-
-        public Streak(string path, bool reader = true, bool writer = false)
+        public static IStreak Open(string path)
         {
-            _path = path;
-
-            _reader = reader ? new StreakReader(path) : null;
-            _writer = writer ? new StreakWriter(path) : null;
+            return new Streak(path) { Clock = new Clock() };
         }
 
-        public void Dispose()
+        internal Streak(string path)
         {
-            _reader?.Dispose();
-            _writer?.Dispose();
+            Path = path;
         }
 
-        public void Save(IEnumerable<Entry> events)
+        public IAdvancedStreak Advanced()
         {
-            if (_writer == null) throw new NotSupportedException();
-
-            _writer.Write(events);
+            return this;
         }
 
-        public IEnumerable<Entry> Get(long @from = 1, long to = long.MaxValue, bool continuous = false)
+        public IStreakReader Reader()
         {
-            if (_reader == null) throw new NotSupportedException();
+            if (!Directory.Exists(Path)) throw new Exception();
 
-            return _reader.Read(from, to, continuous);
+            var clock = Clock;
+
+            var log = new FileReader($@"{Path}\000000000000001.log", 512000);
+            var index = new FileReader($@"{Path}\000000000000001.index", 512000);
+
+            return new StreakReader(clock, log, index);
+        }
+
+        public IStreakWriter Writer()
+        {
+            if (!Directory.Exists(Path)) Directory.CreateDirectory(Path);
+
+            var clock = Clock;
+
+            var log = new FileWriter($@"{Path}\000000000000001.log");
+            var index = new FileWriter($@"{Path}\000000000000001.index");
+
+            return new StreakWriter(clock, log, index);
         }
     }
 }
