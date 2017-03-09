@@ -22,7 +22,8 @@ namespace Streaks.Utilities
             {
                 if (!IsHighPrecision) return DateTime.UtcNow;
 
-                GetSystemTimePreciseAsFileTime(out long filetime);
+                long filetime;
+                GetSystemTimePreciseAsFileTime(out filetime);
 
                 return DateTime.FromFileTimeUtc(filetime);
             }
@@ -32,7 +33,8 @@ namespace Streaks.Utilities
         {
             try
             {
-                GetSystemTimePreciseAsFileTime(out long _); IsHighPrecision = true;
+                long _;
+                GetSystemTimePreciseAsFileTime(out _); IsHighPrecision = true;
             }
             catch (EntryPointNotFoundException)
             {

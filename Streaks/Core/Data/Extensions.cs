@@ -7,16 +7,10 @@ namespace Streaks.Core.Data
     public static unsafe class Extensions
     {
         /// <summary>
-        /// A thread local buffer to avoid temporary allocations and garbage collection we use a thread local buffer
+        /// A thread local buffer that we use to avoid temporary allocations and garbage collection
         /// </summary>
         internal static ThreadLocal<byte[]> IndexBuffer = new ThreadLocal<byte[]>(() => new byte[20]);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="file"></param>
-        /// <param name="index"></param>
-        /// <returns></returns>
         public static LogEntry ReadLog(this IFileReader file, IndexEntry index)
         {
             if (file.Position != index.Offset) file.Move(index.Offset - file.Position);
@@ -28,12 +22,6 @@ namespace Streaks.Core.Data
             return new LogEntry { Data = buffer };
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="file"></param>
-        /// <param name="position"></param>
-        /// <returns></returns>
         public static IndexEntry ReadIndex(this IFileReader file, long position)
         {
             if (file.Position != position * 20) file.Move(position * 20 - file.Position);
@@ -50,21 +38,11 @@ namespace Streaks.Core.Data
             };
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="file"></param>
-        /// <param name="log"></param>
         public static void Write(this IFileWriter file, LogEntry log)
         {
             file.Write(log.Data, 0, log.Data.Length);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="file"></param>
-        /// <param name="index"></param>
         public static void Write(this IFileWriter file, IndexEntry index)
         {
             fixed (byte* b = IndexBuffer.Value)
