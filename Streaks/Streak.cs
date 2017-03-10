@@ -6,11 +6,6 @@ using Streaks.Utilities;
 
 namespace Streaks
 {
-    public interface IAdvancedStreak : IStreak
-    {
-        IClock Clock { get; set; }
-    }
-
     public class Streak : IAdvancedStreak
     {
         public string Path { get; }
@@ -49,8 +44,8 @@ namespace Streaks
 
             var clock = Clock;
 
-            var log = new FileWriter($@"{Path}\000000000000001.log");
-            var index = new FileWriter($@"{Path}\000000000000001.index");
+            var log = new FileWriter($@"{Path}\000000000000001.log", 512000);
+            var index = new FileWriter($@"{Path}\000000000000001.index", 512000);
 
             return new StreakWriter(clock, log, index);
         }

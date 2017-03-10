@@ -31,7 +31,7 @@ namespace Streaks.Test
             return builder.ToString();
         }
 
-        //[Ignore]
+        [Ignore]
         [TestMethod]
         public void write()
         {
@@ -84,6 +84,7 @@ namespace Streaks.Test
             Console.WriteLine($"         {((double)timer.ElapsedTicks / Stopwatch.Frequency) / count * 1000000} micros per entry");
         }
 
+        [Ignore]
         [TestMethod]
         public void read()
         {

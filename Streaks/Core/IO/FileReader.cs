@@ -21,15 +21,16 @@ namespace Streaks.Core.IO
             Position = File.Position;
         }
 
-        public void Move(long length)
+        public void Move(long position)
         {
-            Position = File.Seek(length, SeekOrigin.Current);
+            Position = File.Seek(position, SeekOrigin.Current);
         }
 
         public void Read(byte[] buffer, int offset, int length)
         {
             var read = 0;
 
+            // Read from the file until we have the expected amount of data
             while ((read += File.Read(buffer, 0 + read, buffer.Length - read)) != buffer.Length)
             {
                 // TODO: Use a reading strategy to control latency

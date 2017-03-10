@@ -7,8 +7,11 @@ namespace Streaks.Core.Data
     public static unsafe class Extensions
     {
         /// <summary>
-        /// A thread local buffer that we use to avoid temporary allocations and garbage collection
+        /// A buffer used for reading/writing index entries to avoid temporary allocations and garbage collection
         /// </summary>
+        /// <remarks>
+        /// Should match the size of a serialized index entry (or be bigger)
+        /// </remarks>
         internal static ThreadLocal<byte[]> IndexBuffer = new ThreadLocal<byte[]>(() => new byte[20]);
 
         public static LogEntry ReadLog(this IFileReader file, IndexEntry index)

@@ -22,13 +22,20 @@ namespace Streaks.Test.Core.Streak
         [TestInitialize]
         public void Setup()
         {
-            var streak = Streaks.Streak.Open(path);
+            var streak = Streaks.Streak.Open(path).Advanced();
 
             writer = streak.Writer();
+
+            writer.Write(Encoding.UTF8.GetBytes("xxx"));
+            writer.Write(Encoding.UTF8.GetBytes("yyy"));
+
+            writer.Discard();
 
             writer.Write(Encoding.UTF8.GetBytes("aaa"));
             writer.Write(Encoding.UTF8.GetBytes("bbb"));
             writer.Write(Encoding.UTF8.GetBytes("ccc"));
+
+            writer.Commit();
 
             reader = streak.Reader();
 
