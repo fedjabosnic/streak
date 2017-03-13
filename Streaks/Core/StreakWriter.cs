@@ -22,7 +22,7 @@ namespace Streaks.Core
         public void Write(byte[] data)
         {
             var log = new LogEntry { Data = data };
-            var index = new IndexEntry { Timestamp = Clock.Time, Offset = Log.Position, Length = data.Length };
+            var index = new IndexEntry { Offset = Log.Position, Length = data.Length };
 
             Log.Write(log);
             Index.Write(index);

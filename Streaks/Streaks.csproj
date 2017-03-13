@@ -47,6 +47,7 @@
     <Compile Include="Core\IO\FileWriter.cs" />
     <Compile Include="Core\IO\IFileReader.cs" />
     <Compile Include="Core\IO\IFileWriter.cs" />
+    <Compile Include="Dsl\Enumerable.cs" />
     <Compile Include="Dsl\Replication.cs" />
     <Compile Include="Core\IStreakReader.cs" />
     <Compile Include="Core\IStreakWriter.cs" />

@@ -6,6 +6,7 @@ using System.Text;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Streaks.Core;
+using Streaks.Dsl;
 
 namespace Streaks.Test.Core.Streak
 {
@@ -25,19 +26,16 @@ namespace Streaks.Test.Core.Streak
             var streak = Streaks.Streak.Open(path).Advanced();
 
             writer = streak.Writer();
+            reader = streak.Reader();
 
             writer.Write(Encoding.UTF8.GetBytes("xxx"));
             writer.Write(Encoding.UTF8.GetBytes("yyy"));
-
             writer.Discard();
 
             writer.Write(Encoding.UTF8.GetBytes("aaa"));
             writer.Write(Encoding.UTF8.GetBytes("bbb"));
             writer.Write(Encoding.UTF8.GetBytes("ccc"));
-
             writer.Commit();
-
-            reader = streak.Reader();
 
             output.Add(reader.Read(1));
             output.Add(reader.Read(2));
@@ -54,25 +52,25 @@ namespace Streaks.Test.Core.Streak
         }
 
         [TestMethod]
-        public void should_return_the_correct_number_of_events()
+        public void should_return_the_correct_number_of_entries()
         {
             output.Should().HaveCount(3);
         }
 
         [TestMethod]
-        public void should_return_the_correct_position_for_each_event()
+        public void should_return_the_correct_position_for_each_entry()
         {
             // TODO
         }
 
         [TestMethod]
-        public void should_return_the_correct_timestamp_for_each_event()
+        public void should_return_the_correct_timestamp_for_each_entry()
         {
             // TODO
         }
 
         [TestMethod]
-        public void should_return_the_correct_data_for_each_event()
+        public void should_return_the_correct_data_for_each_entry()
         {
             Encoding.UTF8.GetString(output[0]).Should().Be("aaa");
             Encoding.UTF8.GetString(output[1]).Should().Be("bbb");

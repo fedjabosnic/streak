@@ -12,7 +12,7 @@ namespace Streaks.Core.Data
         /// <remarks>
         /// Should match the size of a serialized index entry (or be bigger)
         /// </remarks>
-        internal static ThreadLocal<byte[]> IndexBuffer = new ThreadLocal<byte[]>(() => new byte[20]);
+        internal static ThreadLocal<byte[]> IndexBuffer = new ThreadLocal<byte[]>(() => new byte[12]);
 
         public static LogEntry ReadLog(this IFileReader file, IndexEntry index)
         {
@@ -27,7 +27,7 @@ namespace Streaks.Core.Data
 
         public static IndexEntry ReadIndex(this IFileReader file, long position)
         {
-            if (file.Position != position * 20) file.Move(position * 20 - file.Position);
+            if (file.Position != position * 12) file.Move(position * 12 - file.Position);
 
             var buffer = IndexBuffer.Value;
             
@@ -35,9 +35,8 @@ namespace Streaks.Core.Data
 
             return new IndexEntry
             {
-                Timestamp = new DateTime(BitConverter.ToInt64(buffer, 0)),
-                Offset = BitConverter.ToInt64(buffer, 8),
-                Length = BitConverter.ToInt32(buffer, 16)
+                Offset = BitConverter.ToInt64(buffer, 0),
+                Length = BitConverter.ToInt32(buffer, 8)
             };
         }
 
@@ -50,12 +49,11 @@ namespace Streaks.Core.Data
         {
             fixed (byte* b = IndexBuffer.Value)
             {
-                *(long*)(b + 00) = index.Timestamp.Ticks;
-                *(long*)(b + 08) = index.Offset;
-                *(long*)(b + 16) = index.Length;
+                *(long*)(b + 00) = index.Offset;
+                *(long*)(b + 08) = index.Length;
             }
 
-            file.Write(IndexBuffer.Value, 0, 20);
+            file.Write(IndexBuffer.Value, 0, 12);
         }
     }
 }

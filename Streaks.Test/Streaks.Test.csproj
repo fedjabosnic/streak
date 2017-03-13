@@ -41,6 +41,9 @@
     <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <HintPath>..\packages\Castle.Core.4.0.0\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
+    <Reference Include="dotMemory.Unit, Version=103.0.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.dotMemoryUnit.2.3.20160517.113140\lib\dotMemory.Unit.dll</HintPath>
+    </Reference>
     <Reference Include="FluentAssertions, Version=4.19.0.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
       <HintPath>..\packages\FluentAssertions.4.19.0\lib\net45\FluentAssertions.dll</HintPath>
     </Reference>
@@ -76,6 +79,7 @@
     <Compile Include="Core\Streak\reading_a_streak.cs" />
     <Compile Include="Core\Streak\reading_a_streak_subset.cs" />
     <Compile Include="performance_tests.cs" />
+    <Compile Include="Scenarios\low_latency.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Streaks\Streaks.csproj">
