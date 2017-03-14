@@ -10,6 +10,7 @@ using Streaks.Core;
 namespace Streaks.Test.Scenarios
 {
     [TestClass]
+    [Ignore]
     public class low_latency
     {
         private static int count = 1000000;
@@ -65,7 +66,7 @@ namespace Streaks.Test.Scenarios
         }
 
         [TestMethod]
-        public void TestMethod1()
+        public void run()
         {
             var streak = Streak.Open(path);
 

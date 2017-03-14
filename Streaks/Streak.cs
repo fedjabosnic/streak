@@ -44,10 +44,17 @@ namespace Streaks
 
             var clock = Clock;
 
-            var log = new FileWriter($@"{Path}\000000000000001.log", 512000);
-            var index = new FileWriter($@"{Path}\000000000000001.index", 512000);
+            try
+            {
+                var log = new FileWriter($@"{Path}\000000000000001.log", 512000);
+                var index = new FileWriter($@"{Path}\000000000000001.index", 512000);
 
-            return new StreakWriter(clock, log, index);
+                return new StreakWriter(clock, log, index);
+            }
+            catch (IOException e)
+            {
+                throw new Exception("Unable to take write lock on the streak");
+            }
         }
     }
 }
