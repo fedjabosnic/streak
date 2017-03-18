@@ -21,6 +21,8 @@ namespace Streaks.Test.Specifications
         [BeforeScenario]
         public void Setup()
         {
+            if (Directory.Exists(Path)) Directory.Delete(Path, true);
+
             streak = Streak.Open(Path);
 
             writer = streak.Writer();
@@ -35,7 +37,7 @@ namespace Streaks.Test.Specifications
             reader.Dispose();
             writer.Dispose();
 
-            Directory.Delete(Path, true);
+            if (Directory.Exists(Path)) Directory.Delete(Path, true);
         }
 
         [Given(@"an empty streak")]

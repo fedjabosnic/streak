@@ -20,7 +20,7 @@ namespace Streaks.Core
 
         public byte[] Read(long position)
         {
-            var index = Index.ReadIndex(position - 1);
+            var index = Index.ReadIndex(position);
             var log = Log.ReadLog(index);
 
             return log.Data;

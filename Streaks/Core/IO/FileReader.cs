@@ -21,13 +21,10 @@ namespace Streaks.Core.IO
             Position = File.Position;
         }
 
-        public void Move(long position)
+        public void Read(byte[] buffer, long position)
         {
-            Position = File.Seek(position, SeekOrigin.Current);
-        }
+            if (Position != position) Position = File.Seek(position - Position, SeekOrigin.Current);
 
-        public void Read(byte[] buffer, int offset, int length)
-        {
             var read = 0;
 
             // Read from the file until we have the expected amount of data

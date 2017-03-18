@@ -7,7 +7,7 @@ namespace Streaks.Core.IO
         long Length { get; }
         long Position { get; }
 
-        void Write(byte[] entry, int offset, int length);
+        void Write(byte[] entry);
         void Flush(bool force = false);
         void Discard();
     }

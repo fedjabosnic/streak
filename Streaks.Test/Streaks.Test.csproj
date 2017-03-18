@@ -75,6 +75,10 @@
     <Compile Include="..\.common\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="Core\Data\when_an_index_entry_is_read_from_file.cs" />
+    <Compile Include="Core\Data\when_an_index_entry_is_written_to_file.cs" />
+    <Compile Include="Core\Data\when_a_log_entry_is_read_from_file.cs" />
+    <Compile Include="Core\Data\when_a_log_entry_is_written_to_file.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\Streak\reading_a_streak.cs" />
     <Compile Include="Core\Streak\reading_a_streak_subset.cs" />

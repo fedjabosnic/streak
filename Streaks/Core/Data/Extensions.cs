@@ -16,22 +16,18 @@ namespace Streaks.Core.Data
 
         public static LogEntry ReadLog(this IFileReader file, IndexEntry index)
         {
-            if (file.Position != index.Offset) file.Move(index.Offset - file.Position);
-
             var buffer = new byte[index.Length];
 
-            file.Read(buffer, 0, buffer.Length);
+            file.Read(buffer, index.Offset);
 
             return new LogEntry { Data = buffer };
         }
 
         public static IndexEntry ReadIndex(this IFileReader file, long position)
         {
-            if (file.Position != position * 12) file.Move(position * 12 - file.Position);
-
             var buffer = IndexBuffer.Value;
-            
-            file.Read(buffer, 0, buffer.Length);
+
+            file.Read(buffer, (position - 1) * 12);
 
             return new IndexEntry
             {
@@ -42,7 +38,7 @@ namespace Streaks.Core.Data
 
         public static void Write(this IFileWriter file, LogEntry log)
         {
-            file.Write(log.Data, 0, log.Data.Length);
+            file.Write(log.Data);
         }
 
         public static void Write(this IFileWriter file, IndexEntry index)
@@ -53,7 +49,7 @@ namespace Streaks.Core.Data
                 *(long*)(b + 08) = index.Length;
             }
 
-            file.Write(IndexBuffer.Value, 0, 12);
+            file.Write(IndexBuffer.Value);
         }
     }
 }

@@ -7,7 +7,6 @@ namespace Streaks.Core.IO
         long Length { get; }
         long Position { get; }
 
-        void Move(long position);
-        void Read(byte[] buffer, int offset, int length);
+        void Read(byte[] buffer, long position);
     }
 }

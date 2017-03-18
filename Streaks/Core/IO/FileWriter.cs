@@ -25,12 +25,12 @@ namespace Streaks.Core.IO
             Position = File.Position;
         }
 
-        public void Write(byte[] data, int offset, int length)
+        public void Write(byte[] data)
         {
-            Buffer.Write(data, offset, length);
+            Buffer.Write(data, 0, data.Length);
 
-            Position += length;
-            Length += length;
+            Position += data.Length;
+            Length += data.Length;
         }
 
         public void Flush(bool sync = false)
