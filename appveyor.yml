@@ -11,6 +11,10 @@
   - cmd: nuget restore
   build:
     verbosity: normal
+  test:
+    assemblies:
+    - 'Streaks.Test.dll'
+    - 'Streaks.Spec.dll'
 - 
   version: 0.3.1.{build}
   branches:
@@ -31,6 +35,10 @@
     publish_nuget: true
     publish_nuget_symbols: true
     verbosity: minimal
+  test:
+    assemblies:
+    - 'Streaks.Test.dll'
+    - 'Streaks.Spec.dll'
   artifacts:
   - path: '**\*.nupkg'
     name: Nuget packages
