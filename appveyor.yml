@@ -5,16 +5,12 @@
     - master
   skip_tags: true
   image: Visual Studio 2015
-  nuget:
-    account_feed: true
   before_build:
   - cmd: nuget restore
   build:
     verbosity: normal
-  test:
-    assemblies:
-    - 'Streaks.Test.dll'
-    - 'Streaks.Spec.dll'
+  test_script:
+  - cmd: vstest.console /logger:Appveyor "C:\projects\streak\Streaks.Test\bin\Debug\Streaks.Test.dll" "C:\projects\streak\Streaks.Spec\bin\Debug\Streaks.Spec.dll" /testadapterpath:"C:\projects\streak"
 - 
   version: 0.3.1.{build}
   branches:
@@ -35,10 +31,8 @@
     publish_nuget: true
     publish_nuget_symbols: true
     verbosity: minimal
-  test:
-    assemblies:
-    - 'Streaks.Test.dll'
-    - 'Streaks.Spec.dll'
+  test_script:
+  - cmd: vstest.console /logger:Appveyor "C:\projects\streak\Streaks.Test\bin\Release\Streaks.Test.dll" "C:\projects\streak\Streaks.Spec\bin\Release\Streaks.Spec.dll" /testadapterpath:"C:\projects\streak"
   artifacts:
   - path: '**\*.nupkg'
     name: Nuget packages
