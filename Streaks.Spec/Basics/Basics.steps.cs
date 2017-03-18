@@ -43,17 +43,6 @@ namespace Streaks.Test.Specifications
         {
         }
 
-        [Given(@"a streak with data")]
-        public void given_a_streak_with_data()
-        {
-            writer.Write(new byte[] { 1 });
-            writer.Write(new byte[] { 2 });
-            writer.Write(new byte[] { 3 });
-            writer.Write(new byte[] { 4 });
-
-            writer.Commit();
-        }
-
         [Given(@"a streak with ""(.*)"" entries")]
         public void given_a_streak_with_some_entries(int entries)
         {

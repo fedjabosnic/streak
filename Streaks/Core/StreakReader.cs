@@ -1,23 +1,19 @@
 using System;
 using Streaks.Core.Data;
 using Streaks.Core.IO;
-using Streaks.Utilities;
 
 namespace Streaks.Core
 {
     public class StreakReader : IStreakReader
     {
-        internal IClock Clock { get; }
         internal IFileReader Log { get; }
         internal IFileReader Index { get; }
 
         // TODO: Remove magic numbers
         public long Count => Index.Length / 12;
 
-        internal StreakReader(IClock clock, IFileReader log, IFileReader index)
+        internal StreakReader(IFileReader log, IFileReader index)
         {
-            Clock = clock;
-
             Log = log;
             Index = index;
         }

@@ -1,20 +1,16 @@
 using System;
 using Streaks.Core.Data;
 using Streaks.Core.IO;
-using Streaks.Utilities;
 
 namespace Streaks.Core
 {
     public class StreakWriter : IStreakWriter
     {
-        internal IClock Clock { get; }
         internal IFileWriter Log { get; }
         internal IFileWriter Index { get; }
 
-        internal StreakWriter(IClock clock, IFileWriter log, IFileWriter index)
+        internal StreakWriter(IFileWriter log, IFileWriter index)
         {
-            Clock = clock;
-
             Log = log;
             Index = index;
         }

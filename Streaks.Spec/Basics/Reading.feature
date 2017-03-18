@@ -18,21 +18,21 @@ Scenario: Reading an entry that does exist
 
 Scenario: Reading sequentially
 
-   Given a streak with "6" entries
+   Given a streak with "4" entries
     When I read the entries sequentially
     Then I should read the correct data
 
 
 Scenario: Reading randomly
 
-   Given a streak with data
+   Given a streak with "4" entries
     When I read the entries randomly
     Then I should read the correct data
 
 
 Scenario: Reading in reverse
 
-   Given a streak with data
+   Given a streak with "4" entries
     When I read the entries in reverse
     Then I should read the correct data
 

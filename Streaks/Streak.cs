@@ -30,26 +30,22 @@ namespace Streaks
         {
             if (!Directory.Exists(Path)) throw new Exception();
 
-            var clock = Clock;
-
             var log = new FileReader($@"{Path}\000000000000001.log", 512000);
             var index = new FileReader($@"{Path}\000000000000001.index", 512000);
 
-            return new StreakReader(clock, log, index);
+            return new StreakReader(log, index);
         }
 
         public IStreakWriter Writer()
         {
             if (!Directory.Exists(Path)) Directory.CreateDirectory(Path);
 
-            var clock = Clock;
-
             try
             {
                 var log = new FileWriter($@"{Path}\000000000000001.log", 512000);
                 var index = new FileWriter($@"{Path}\000000000000001.index", 512000);
 
-                return new StreakWriter(clock, log, index);
+                return new StreakWriter(log, index);
             }
             catch (IOException e)
             {

@@ -94,7 +94,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 19
 this.ScenarioSetup(scenarioInfo);
 #line 21
-   testRunner.Given("a streak with \"6\" entries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+   testRunner.Given("a streak with \"4\" entries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 22
     testRunner.When("I read the entries sequentially", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 23
@@ -112,7 +112,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 26
 this.ScenarioSetup(scenarioInfo);
 #line 28
-   testRunner.Given("a streak with data", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+   testRunner.Given("a streak with \"4\" entries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 29
     testRunner.When("I read the entries randomly", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 30
@@ -130,7 +130,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 33
 this.ScenarioSetup(scenarioInfo);
 #line 35
-   testRunner.Given("a streak with data", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+   testRunner.Given("a streak with \"4\" entries", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 36
     testRunner.When("I read the entries in reverse", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 37
