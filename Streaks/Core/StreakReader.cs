@@ -10,6 +10,7 @@ namespace Streaks.Core
         internal IFileReader Index { get; }
 
         // TODO: Remove magic numbers
+        public long Size => Log.Length + Index.Length;
         public long Count => Index.Length / 12;
 
         internal StreakReader(IFileReader log, IFileReader index)

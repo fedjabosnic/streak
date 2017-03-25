@@ -43,6 +43,7 @@ namespace Streaks.Test.Specifications
         [Given(@"an empty streak")]
         public void given_an_empty_streak()
         {
+            // Performed during setup
         }
 
         [Given(@"a streak with ""(.*)"" entries")]
@@ -59,11 +60,13 @@ namespace Streaks.Test.Specifications
         [Given(@"a writer is already open")]
         public void given_a_writer_is_already_open()
         {
+            // Performed during setup
         }
 
         [Given(@"a reader is already open")]
         public void given_a_reader_is_already_open()
         {
+            // Performed during setup
         }
 
         [When(@"I open another writer")]
@@ -101,6 +104,7 @@ namespace Streaks.Test.Specifications
         [When(@"I do not commit")]
         public void when_i_do_not_commit()
         {
+            // Unperformed action
         }
 
         [When(@"I commit")]

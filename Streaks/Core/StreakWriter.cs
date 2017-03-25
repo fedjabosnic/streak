@@ -9,6 +9,10 @@ namespace Streaks.Core
         internal IFileWriter Log { get; }
         internal IFileWriter Index { get; }
 
+        // TODO: Remove magic numbers
+        public long Size => Log.Length + Index.Length;
+        public long Count => Index.Length / 12;
+
         internal StreakWriter(IFileWriter log, IFileWriter index)
         {
             Log = log;
