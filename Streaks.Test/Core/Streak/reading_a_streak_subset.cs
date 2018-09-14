@@ -43,8 +43,8 @@
 //            reader.Dispose();
 //            writer.Dispose();
 
-//            File.Delete(Environment.CurrentDirectory + @"\main.ind");
-//            File.Delete(Environment.CurrentDirectory + @"\main.dat");
+//            File.Delete(Environment.CurrentDirectory + @"/main.ind");
+//            File.Delete(Environment.CurrentDirectory + @"/main.dat");
 //        }
 
 //        [TestMethod]

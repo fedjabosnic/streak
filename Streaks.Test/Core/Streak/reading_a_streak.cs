@@ -11,7 +11,7 @@ namespace Streaks.Test.Core.Streak
     [TestClass]
     public class reading_a_streak
     {
-        private string path = $@"{Environment.CurrentDirectory}\reading_a_streak";
+        private string path = $@"{Environment.CurrentDirectory}/reading_a_streak";
 
         private IStreakReader reader;
         private IStreakWriter writer;

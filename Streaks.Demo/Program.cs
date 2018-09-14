@@ -13,7 +13,7 @@ namespace Streaks.Demo
             Console.WriteLine("");
             Console.ReadKey();
 
-            var streak = Streak.Open($@"{Environment.CurrentDirectory}\demo");
+            var streak = Streak.Open($@"{Environment.CurrentDirectory}/demo");
 
             var writer = streak.Writer();
             var reader = streak.Reader();
@@ -50,7 +50,7 @@ namespace Streaks.Demo
 
         private static string Warmup()
         {
-            var streak = Streak.Open($@"{Environment.CurrentDirectory}\jit");
+            var streak = Streak.Open($@"{Environment.CurrentDirectory}/jit");
 
             using (var w = streak.Writer())
             using (var r = streak.Reader())

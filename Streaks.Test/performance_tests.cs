@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
@@ -35,7 +35,7 @@ namespace Streaks.Test
         [TestMethod]
         public void write()
         {
-            var streak = Streak.Open($@"{Environment.CurrentDirectory}\abc");
+            var streak = Streak.Open($@"{Environment.CurrentDirectory}/abc");
 
             using (var writer = streak.Writer())
             {
@@ -88,7 +88,7 @@ namespace Streaks.Test
         [TestMethod]
         public void read()
         {
-            var streak = Streak.Open($@"{Environment.CurrentDirectory}\abc");
+            var streak = Streak.Open($@"{Environment.CurrentDirectory}/abc");
 
             using (var reader = streak.Reader())
             {
@@ -133,7 +133,7 @@ namespace Streaks.Test
             //[TestMethod]
             //public void write_batch()
             //{
-            //    var streak = new global::Streaks.Streak($@"{Environment.CurrentDirectory}\abc", writer: true);
+            //    var streak = new global::Streaks.Streak($@"{Environment.CurrentDirectory}/abc", writer: true);
 
             //    var es = new List<Entry>(1000);
 
@@ -162,7 +162,7 @@ namespace Streaks.Test
             //[TestMethod]
             //public void write_bulk()
             //{
-            //    var streak = new global::Streaks.Streak($@"{Environment.CurrentDirectory}\abc", writer: true);
+            //    var streak = new global::Streaks.Streak($@"{Environment.CurrentDirectory}/abc", writer: true);
 
             //    var es = new List<Entry>();
 
@@ -187,7 +187,7 @@ namespace Streaks.Test
             //[TestMethod]
             //public void read()
             //{
-            //    var streak = new global::Streaks.Streak($@"{Environment.CurrentDirectory}\abc", writer: true);
+            //    var streak = new global::Streaks.Streak($@"{Environment.CurrentDirectory}/abc", writer: true);
 
             //    var timer = new Stopwatch();
 
@@ -210,7 +210,7 @@ namespace Streaks.Test
             //[TestMethod]
             //public void read_write()
             //{
-            //    var streak = new global::Streaks.Streak($@"{Environment.CurrentDirectory}\abc", writer: true);
+            //    var streak = new global::Streaks.Streak($@"{Environment.CurrentDirectory}/abc", writer: true);
 
             //    Task.Factory.StartNew(() =>
             //    {

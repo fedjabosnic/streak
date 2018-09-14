@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -14,7 +14,7 @@ namespace Streaks.Test.Scenarios
     public class low_latency
     {
         private static int count = 1000000;
-        private static string path = $@"{Environment.CurrentDirectory}\low_latency";
+        private static string path = $@"{Environment.CurrentDirectory}/low_latency";
 
         private IStreakReader reader;
         private IStreakWriter writer;
@@ -31,7 +31,7 @@ namespace Streaks.Test.Scenarios
         {
             // JIT warm up
 
-            var streak = Streak.Open(path + @"\jit");
+            var streak = Streak.Open(path + @"/jit");
 
             using (var w = streak.Writer())
             using (var r = streak.Reader())

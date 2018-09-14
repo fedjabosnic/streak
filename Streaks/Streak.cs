@@ -30,8 +30,8 @@ namespace Streaks
         {
             if (!Directory.Exists(Path)) throw new Exception();
 
-            var log = new FileReader($@"{Path}\000000000000001.log", 512000);
-            var index = new FileReader($@"{Path}\000000000000001.index", 512000);
+            var log = new FileReader($@"{Path}/000000000000001.log", 512000);
+            var index = new FileReader($@"{Path}/000000000000001.index", 512000);
 
             return new StreakReader(log, index);
         }
@@ -42,12 +42,12 @@ namespace Streaks
 
             try
             {
-                var log = new FileWriter($@"{Path}\000000000000001.log", 512000);
-                var index = new FileWriter($@"{Path}\000000000000001.index", 512000);
+                var log = new FileWriter($@"{Path}/000000000000001.log", 512000);
+                var index = new FileWriter($@"{Path}/000000000000001.index", 512000);
 
                 return new StreakWriter(log, index);
             }
-            catch (IOException e)
+            catch (IOException)
             {
                 throw new Exception("Unable to take write lock on the streak");
             }
