@@ -36,7 +36,7 @@ namespace Streaks.Utilities
                 long _;
                 GetSystemTimePreciseAsFileTime(out _); IsHighPrecision = true;
             }
-            catch (EntryPointNotFoundException)
+            catch (Exception)
             {
                 IsHighPrecision = false;
             }
