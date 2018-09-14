@@ -1,0 +1,28 @@
+{
+    "version": "2.0.0",
+    "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": true
+    },
+    "tasks": [
+        {
+            "label": "Build - Debug",
+            "identifier": "build.debug",
+            "type": "shell",
+            "command": "dotnet build -c Debug ${workspaceFolder}/Streaks.sln",
+            "problemMatcher": "$msCompile",
+            "group": "build"
+        },
+        {
+            "label": "Build - Release",
+            "identifier": "build.release",
+            "type": "shell",
+            "command": "dotnet build -c Release ${workspaceFolder}/Streaks.sln",
+            "problemMatcher": "$msCompile",
+            "group": "build"
+        }
+    ]
+}
