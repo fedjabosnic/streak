@@ -1,74 +1,30 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0539F21E-9D6D-4515-9AD0-F9BEDF592A84}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Streaks</RootNamespace>
-    <AssemblyName>Streaks</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+
+  <PropertyGroup>
+    <Product>Hotfix</Product>
+    <Version>0.3.1</Version>
+    <Authors>Fedja Bosnic</Authors>
+    <Copyright>Copyright © Fedja Bosnic 2017</Copyright>
+    <Description>A high performance general use event sourcing library.</Description>
+    <PackageTags>streaks streak events event sourcing store</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/fedjabosnic/streak</PackageProjectUrl>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageLicenseUrl>https://github.com/fedjabosnic/streak/raw/master/LICENSE</PackageLicenseUrl>
+    <RepositoryUrl>https://github.com/fedjabosnic/streak</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\.common\VersionInfo.cs">
-      <Link>Properties\VersionInfo.cs</Link>
-    </Compile>
-    <Compile Include="Core\Data\Extensions.cs" />
-    <Compile Include="Core\Data\IndexEntry.cs" />
-    <Compile Include="Core\Data\LogEntry.cs" />
-    <Compile Include="Core\IO\FileReader.cs" />
-    <Compile Include="Core\IO\FileWriter.cs" />
-    <Compile Include="Core\IO\IFileReader.cs" />
-    <Compile Include="Core\IO\IFileWriter.cs" />
-    <Compile Include="Dsl\Enumerable.cs" />
-    <Compile Include="Dsl\Replication.cs" />
-    <Compile Include="Core\IStreakReader.cs" />
-    <Compile Include="Core\IStreakWriter.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="IStreak.cs" />
-    <Compile Include="Streak.cs" />
-    <Compile Include="Core\StreakReader.cs" />
-    <Compile Include="Core\StreakWriter.cs" />
-    <Compile Include="Utilities\Buffer.cs" />
-    <Compile Include="Utilities\Clock.cs" />
-    <Compile Include="Utilities\IClock.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Streaks.nuspec" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>
